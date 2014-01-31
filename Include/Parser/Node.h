@@ -1,13 +1,11 @@
 #include <iostream>
 #include <vector>
 
-class NStatement;
+class NIdentifier;
 class NExpression;
-class NVariableDeclaration;
 
-typedef std::vector<NStatement*> StatementList;
-typedef std::vector<NExpression*> ExpressionList;
-typedef std::vector<NVariableDeclaration*> VariableList;
+typedef std::vector<NExpression*> ExpressionVec;
+typedef std::vector<NIdentifier*> IdentifierVec;
 
 class Node
 {
@@ -26,8 +24,8 @@ class NStatement : public Node
 class NInteger : public NExpression
 {
 public:
-	long long value;
-	NInteger(long long value) : value(value) { }
+	long long m_Value;
+	NInteger(long long Value) : m_Value( Value ) { }
 };
 
 class NDouble : public NExpression
@@ -47,14 +45,14 @@ public:
 class NMethodCall : public NExpression
 {
 public:
-	const NIdentifier& m_Id;
-	ExpressionList m_Arguments;
+	const NIdentifier& m_Name;
+	ExpressionVec m_Arguments;
 
-	NMethodCall( const NIdentifier& Id, ExpressionList& Arguments):
-		m_Id( Id ),
+	NMethodCall( const NIdentifier& Name, ExpressionList& Arguments ):
+		m_Name( Name ),
         m_Arguments( Arguments ) { }
 
-	NMethodCall( const NIdentifier& Id ): m_Id( id ) { }
+	NMethodCall( const NIdentifier& Name ): m_Name( Name ) { }
 };
 
 class NBinaryOperator : public NExpression
@@ -65,7 +63,7 @@ public:
 	NExpression& m_Lhs;
 	NExpression& m_Rhs;
 
-	NBinaryOperator(NExpression& lhs, int op, NExpression& rhs):
+	NBinaryOperator( NExpression& Lhs, int Op, NExpression& Rhs ):
 		m_Lhs( Lhs ),
         m_Rhs( Rhs ),
         m_Op( Op ) { }
@@ -77,7 +75,7 @@ public:
 	NIdentifier& m_Lhs;
 	NExpression& m_Rhs;
 
-	NAssignment(NIdentifier& lhs, NExpression& rhs):
+	NAssignment( NIdentifier& Lhs, NExpression& Rhs ):
         m_Lhs( Lhs ),
         m_Rhs( Rhs ) { }
 };
@@ -107,39 +105,17 @@ public:
 		m_Expression( Expression ) { }
 };
 
-class NVariableDeclaration : public NStatement
+class NFunctionDefination : public NStatement
 {
 public:
-	const NIdentifier& m_Type;
+	const NIdentifier& m_Name;
 
-	NIdentifier& m_Id;
-
-	NExpression *m_AssignmentExpr;
-
-	NVariableDeclaration( const NIdentifier& Type, NIdentifier& Id ):
-		m_Type( type ),
-        m_Id( id ) { }
-
-	NVariableDeclaration( const NIdentifier& Type, NIdentifier& Id, NExpression *AssignmentExpr ):
-		m_Type( Type ),
-        m_Id( Id ),
-        m_AssignmentExpr( AssignmentExpr ) { }
-};
-
-class NFunctionDeclaration : public NStatement
-{
-public:
-	const NIdentifier& m_Type;
-
-	const NIdentifier& m_Id;
-
-	VariableList m_Arguments;
+	IdentifierVec m_Arguments;
 
 	NBlock& m_Block;
 
-	NFunctionDeclaration( const NIdentifier& Type, const NIdentifier& Id, const VariableList& Arguments, NBlock& Block ):
-	    m_Type( Type ),
-        m_Id( Id ),
+	NFunctionDeclaration( const NIdentifier& Name, const VariableList& Arguments, NBlock& Block ):
+        m_Name( Name ),
         m_Arguments( Arguments ),
         m_Block( Block ) { }
 };

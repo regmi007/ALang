@@ -21,9 +21,8 @@
 	NStatement  *Statement;
 	NIdentifier *Identifier;
 
-	NVariableDeclaration *VariableDeclaration;
+	std::vector<NIdentifier*> *IdentifierVec;
 
-	std::vector<NVariableDeclaration*> *VariableDeclarationVec;
 	std::vector<NExpression*> *ExpressionVec;
 
 	std::string *String;
@@ -47,15 +46,16 @@
  */
 %type <Identifier> Identifier
 %type <Expression> Numeric Expression
-%type <VariableDeclarationVec> FuncPrototypeArg
+%type <IdentifierVec> FunctionArgs
 %type <ExpressionVec> CallArgs
 %type <Block> Program Statements Block
-%type <Statement> Statement VariableDef FuncDef
+%type <Statement> Statement VariableInit FuncDef
 %type <Token> Comparison
 
 /* Operator precedence for mathematical operators */
-%left TPLUS TMINUS
-%left TMUL TDIV
+%left   TPLUS TMINUS
+%left   TMUL TDIV
+%right  TPOW
 
 %start Program
 
@@ -79,7 +79,7 @@ Identifier : TIDENTIFIER { $$ = new NIdentifier(*$1); delete $1; }
     ;
 
 FunctionDefination : Identifier Identfier TLPAREN FunctionArgs TRPAREN Block
-    { $$ = new NFunctionDeclaration(*$1, *$2, *$4, *$6); delete $4; }
+    { $$ = new NFunctionDefination(*$1, *$2, *$4, *$6); delete $4; }
 	;
 
 FunctionArgs : /*blank*/              {  }
@@ -103,8 +103,8 @@ Expression : Identifier TEQUAL Expression    { $$ = new NAssignment(*$<ident>1, 
     | TLPAREN Expression TRPAREN             { $$ = $2; }
 	;
 	
-CallArgs : /*blank*/              { $$ = new ExpressionList(); }
-	| Expression                  { $$ = new ExpressionList(); $$->push_back( $1 ); }
+CallArgs : /*blank*/              { $$ = new ExpressionVec(); }
+	| Expression                  { $$ = new ExpressionVec(); $$->push_back( $1 ); }
 	| CallArgs TCOMMA Expression  { $1->push_back( $3 ); }
 	;
 
