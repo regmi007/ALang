@@ -1,8 +1,12 @@
 z = 10
 a = 2
+s1 = '123'
+s2 = "1234"
+s3 = '12"13"56'
+s4 = "56'78'90"
 
 If( z == 10 )
     If( a == 2 )
-        # Print( "Hello from 'Yet Another Language'\n" )
-        x = 3
-
+        z = 12
+    Else
+        a = 1
