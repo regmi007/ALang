@@ -1,4 +1,4 @@
 ALang
 =====
 
-Yet Another Language
+Yet Another Programming Language.
