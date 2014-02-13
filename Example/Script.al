@@ -1,12 +1,4 @@
-z = 10
-a = 2
-s1 = '123'
-s2 = "1234"
-s3 = '12"13"56'
-s4 = "56'78'90"
-
-If( z == 10 )
-    If( a == 2 )
-        z = 12
-    Else
-        a = 1
+age = 12
+weight = 155.24
+str1 = 'Hello "World"'
+str2 = "Hi 'Again'"
