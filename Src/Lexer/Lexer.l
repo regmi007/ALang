@@ -242,12 +242,28 @@ int ProcessIndent( const char* Line )
 }
 
 #if defined( ALANG_DEBUG_LEXER )
-int main()
+int main( int Argc, char *Argv[] )
 {
     Indent.push( 0 );
+    
+    FILE *Fp = nullptr;
+    
+    if( Argc == 2)
+    {   
+        FILE *Fp = fopen( Argv[1], "r" );
+
+        if( !Fp )
+        {
+            perror( Argv[1]);
+            return( 1 );
+        }
+        
+        yyin = Fp;
+    }
 
     while( yylex() );
 
-    return 0;
+    if( Fp != nullptr )
+        fclose( Fp );
 }
 #endif
