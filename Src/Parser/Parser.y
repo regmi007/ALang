@@ -11,6 +11,8 @@ void yyerror( const char *S )
 }
 %}
 
+%error-verbose
+
 /* Represents the many different ways we can access our data */
 %union {
 	std::string *String;
@@ -34,7 +36,7 @@ void yyerror( const char *S )
  *  we call an ident (defined by union type ident) we are really
  *  calling an (NIdentifier*). It makes the compiler happy.
  */
-//%type <String> Numeric Identifier
+%type <String> Numeric Identifier String Expression
 
 /* Operator precedence for mathematical operators */
 %nonassoc TCEQ TCNE TCLT TCLE TCGT TCGE
@@ -50,32 +52,40 @@ void yyerror( const char *S )
 Program : Statements {  }
 		;
 
-Statements : Statement {}
-    | Statements Statement {}
+Statements : Statement  {   }
+    | Statements Statement  {   }
     ;
 
-Numeric : TINTEGER  { std::cout << "Integer: " << *$1 << "\n"; delete $1; }
-	| TDOUBLE       { std::cout << "Double: " << *$1 << "\n"; delete $1; }
+Block : TINDENT Statements TDEDENT  {  std::cout << "Block: \n"; }
+	  ;
+
+Numeric : TINTEGER  { $$ = $1; }
+	| TDOUBLE       { $$ = $1; }
 	;
 
-Identifier : TIDENTIFIER { std::cout << "Identifier: " << *$1 << "\n"; delete $1; }
+Identifier : TIDENTIFIER { $$ = $1; }
     ;
 
-StringLiteral : TSTRING { std::cout << "String: " << *$1 << "\n"; delete $1; }
+String : TSTRING { $$ = $1; }
     ;
 
-Statement : Expression TEOL { }
-    | Expression TDEDENT { }
+Statement : Expression TEOL {   }
+    | TIF Expression TINDENT Statements TDEDENT  { std::cout << "If Block found\n";  }
     ;
 
-Expression : Identifier TEQUAL Expression    { std::cout << "Assignment: \n"; }
-    | Expression TMUL Expression             {  }
-    | Expression TDIV Expression             {  }
-    | Expression TPLUS Expression            {  }
-    | Expression TMINUS Expression           {  }
-	| Identifier                             {  }
-	| Numeric                                {  }
-    | StringLiteral                          {  }
+Expression : Identifier TEQUAL Expression   { std::cout << "Assignment: " << *$1 << " = " << *$3 << "\n"; $$ = $1; }
+    | Expression TMUL Expression            {   }
+    | Expression TDIV Expression            {   }
+    | Expression TPLUS Expression           {   }
+    | Expression TMINUS Expression          {   }
+    
+    | Expression Comparison Expression      { std::cout << "Comparision: " << *$1 << ", " << *$3 << "\n"; }
+    
+	| Identifier                            {   }
+	| Numeric                               {   }
+    | String                                {   }
 	;
+
+Comparison : TCEQ | TCNE | TCLT | TCLE | TCGT | TCGE;
 
 %%

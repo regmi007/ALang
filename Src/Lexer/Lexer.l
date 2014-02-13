@@ -29,6 +29,7 @@ bool FirstIndent = true;
 unsigned int Nesting        = 0;
 unsigned int SpacePerIndent = 0;
 unsigned int PreviousLevel  = 0;
+unsigned int CurrentLevel   = 0;
 
 std::stack<unsigned int> Indent;
 
@@ -47,12 +48,12 @@ EXP	([Ee][-+]?[0-9]+)
 <DEDENT>.|\n            {
                             yyless(0);
 
-                            if( PreviousLevel < Indent.top() )
+                            if( CurrentLevel < Indent.top() )
                             {
                                 Indent.pop();
 
                                 #ifdef ALANG_DEBUG_LEXER
-                                    std::cout << "DEDENT\n";
+                                    std::cout << "TDEDENT\n";
                                 #endif
 
                                 return TOKEN( TDEDENT );
@@ -148,6 +149,24 @@ EXP	([Ee][-+]?[0-9]+)
 
 .                       std::cout<< "Unknown token at line: " << yylineno << "\n"; yyterminate();
 
+<DEDENT><<EOF>>         {
+                            if( CurrentLevel < Indent.top() )
+                            {
+                                Indent.pop();
+
+                                #ifdef ALANG_DEBUG_LEXER
+                                    std::cout << "TDEDENT\n";
+                                #endif
+
+                                return TOKEN( TDEDENT );
+                            }
+                            else
+                            {
+                                EndOfFile = true;
+                                BEGIN INITIAL;
+                            }
+                        }
+
 <<EOF>>                 {
                             if( EndOfFile )
                                 return 0;
@@ -207,7 +226,7 @@ int ProcessIndent( const char* Line )
         if( ! First )
         {
             #ifdef ALANG_DEBUG_LEXER
-                std::cout << "EOL\n";
+                std::cout << "TEOL\n";
             #endif
         
             return TOKEN( TEOL );
@@ -217,7 +236,7 @@ int ProcessIndent( const char* Line )
         return TNOP;
     }
     else if( Level > Indent.top() )
-    {
+    {        
         Indent.push( Level );
         
         #ifdef ALANG_DEBUG_LEXER
@@ -228,16 +247,26 @@ int ProcessIndent( const char* Line )
     }
     else
     {
+        CurrentLevel = Level;
+
+        BEGIN DEDENT;
+        #ifdef ALANG_DEBUG_LEXER
+            std::cout << "TEOL\n";
+        #endif
+        return TOKEN( TEOL );
+
+/*        
         PreviousLevel = Level;
 
         Indent.pop();
         BEGIN DEDENT;
-        
+
         #ifdef ALANG_DEBUG_LEXER
-            std::cout << "DEDENT\n";
+            std::cout << "TDEDENT\n";
         #endif
         
         return TOKEN( TDEDENT );
+*/
     }
 
     return TNOP;
