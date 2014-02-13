@@ -1,8 +1,9 @@
+# This need to be fixed.
 ADD_CUSTOM_COMMAND(
     OUTPUT ${FLEX_OUTPUT}
     COMMAND ${FLEX_EXECUTABLE}
           --outfile=${FLEX_OUTPUT}
-          Lexer.l
+          ${CMAKE_SOURCE_DIR}/Src/Lexer/Lexer.l
     COMMENT "Generating Lexer.cpp"
 )
 
