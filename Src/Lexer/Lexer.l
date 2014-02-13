@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "Parser.hpp"
+#include "Parser/Parser.h"
 
 #ifndef ALANG_DEBUG_LEXER
     #define TOKEN_STR_EMPTY yylval.String = new std::string()
