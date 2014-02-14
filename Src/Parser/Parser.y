@@ -36,7 +36,7 @@ void yyerror( const char *S )
  *  we call an ident (defined by union type ident) we are really
  *  calling an (NIdentifier*). It makes the compiler happy.
  */
-%type <String> Numeric Identifier String Expression
+//%type <String> Numeric Identifier String Expression
 
 /* Operator precedence for mathematical operators */
 %nonassoc TCEQ TCNE TCLT TCLE TCGT TCGE
@@ -56,35 +56,43 @@ Statements : Statement  {   }
     | Statements Statement  {   }
     ;
 
-Block : TINDENT Statements TDEDENT  {  std::cout << "Block: \n"; }
+Statement : Expression TEOL     {   }
+    | ConditionalStatement      {   }
+    | TWHILE Expression Block   {   }
+    | TFUNC TIDENTIFIER TLPAREN ExpressionList TRPAREN Block    { std::cout << "Function defination found\n"; }
+    ;
+
+ConditionalStatement : IfStatement  {   }
+    | IfStatement TELSE Block   { std::cout << "If-ElseIf-Else block found\n";  }
+    ;
+
+IfStatement : TIF Expression Block  { std::cout << "If block found\n";  }
+    | IfStatement TELIF Expression Block { std::cout << "If-ElseIf block found\n"; }
+    ;
+
+Block : TINDENT Statements TDEDENT  {   }
 	  ;
 
-Numeric : TINTEGER  { $$ = $1; }
-	| TDOUBLE       { $$ = $1; }
-	;
-
-Identifier : TIDENTIFIER { $$ = $1; }
-    ;
-
-String : TSTRING { $$ = $1; }
-    ;
-
-Statement : Expression TEOL {   }
-    | TIF Expression TINDENT Statements TDEDENT  { std::cout << "If Block found\n";  }
-    ;
-
-Expression : Identifier TEQUAL Expression   { std::cout << "Assignment: " << *$1 << " = " << *$3 << "\n"; $$ = $1; }
-    | Expression TMUL Expression            {   }
-    | Expression TDIV Expression            {   }
-    | Expression TPLUS Expression           {   }
+Expression : TIDENTIFIER TEQUAL Expression          { std::cout << "Assignment found\n"; }
+    | TIDENTIFIER TLPAREN ExpressionList TRPAREN    { std::cout << "Function call found.\n"; }
+    | TIDENTIFIER                           {   }  
+    | TINTEGER                              {   }
+    | TDOUBLE                               {   }
+    | TSTRING                               {   }
+    | Expression TMUL   Expression          {   }
+    | Expression TDIV   Expression          {   }
+    | Expression TPLUS  Expression          {   }
     | Expression TMINUS Expression          {   }
-    
-    | Expression Comparison Expression      { std::cout << "Comparision: " << *$1 << ", " << *$3 << "\n"; }
-    
-	| Identifier                            {   }
-	| Numeric                               {   }
-    | String                                {   }
+    | Expression TPOW   Expression          {   }
+    | Expression Comparison Expression      { std::cout << "Comparision found\n"; }
+    | TLPAREN Expression TRPAREN            {   }
+    | TRETURN Expression                    {   }
 	;
+
+ExpressionList: /* Blank */
+    |   Expression                          {   }
+    |   ExpressionList TCOMMA Expression    {   }
+    ;
 
 Comparison : TCEQ | TCNE | TCLT | TCLE | TCGT | TCGE;
 

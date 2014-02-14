@@ -5,8 +5,15 @@
 #str2 = "Hi 'Again'"
 #Else
 #    weight = 49.46
-If x == 2
-    weight = 12.34
-    y = 3
-x = 3
 
+Func my_func( a, b, c )
+    While z <= 3 
+        b = 2
+
+        If x == 2
+            weight = 12.34
+        Elif x == 5
+            y = 3
+        Else
+            a = 3
+    x = 2
