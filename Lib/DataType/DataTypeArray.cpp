@@ -99,11 +99,3 @@ DtValue & DataTypeArray::SubScriptSet( DtValue & Lhs, int Index )
 }
 
 DataTypeArray DtArray;
-
-DtValue ALang::Dt::MakeArray()
-{
-    DtValue Res;
-    Res.Data = std::vector< DtValue >();
-    Res.Type = & DtArray;
-    return Res;
-}

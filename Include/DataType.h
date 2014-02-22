@@ -83,10 +83,20 @@ struct DtValue
         *Type;
 
     DtValue();
-    DtValue( const DtValue & Src );
-    DtValue( boost::any D, DataType *T );
 
+    DtValue( double Val );
+    DtValue( const char* Str );
+    DtValue( const DtValue & Src );
+    DtValue( const std::string & Str );
+    DtValue( const std::vector<DtValue> & Arr ); 
+    DtValue( const boost::any & D, DataType *T );
+
+    DtValue & operator =  ( double Rhs );
+    DtValue & operator =  ( const char* Rhs );
     DtValue & operator =  ( const DtValue & Rhs );
+    DtValue & operator =  ( const std::string & Rhs );
+    DtValue & operator =  ( const std::vector<DtValue> & Rhs );
+
     DtValue   operator +  ( const DtValue & Rhs );
     DtValue   operator -  ( const DtValue & Rhs );
     DtValue   operator *  ( const DtValue & Rhs );
@@ -98,17 +108,13 @@ struct DtValue
     DtValue Size();
 };
 
-DtValue MakeDouble( double Val );
-DtValue MakeString( const std::string & Val );
-DtValue MakeArray();
-
 }} // Namespace Dt, ALang
 
 std::ostream & operator << ( std::ostream & Out, const ALang::Dt::DtValue & Val );
 
 extern ALang::Dt::DataType       DtNull;
+extern ALang::Dt::DataTypeArray  DtArray;
 extern ALang::Dt::DataTypeDouble DtDouble;
 extern ALang::Dt::DataTypeString DtString;
-extern ALang::Dt::DataTypeArray  DtArray;
 
 #endif

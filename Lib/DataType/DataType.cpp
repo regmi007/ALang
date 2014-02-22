@@ -58,19 +58,57 @@ DtValue::DtValue() : Data(), Type( & DtNull )
 {
 }
 
-DtValue::DtValue( boost::any D, DataType *T ) : Data( D ), Type( T )
+DtValue::DtValue( double Val ) : Data( Val ), Type( & DtDouble )
+{
+}
+
+DtValue::DtValue( const char* Str ) : Data( std::string( Str )), Type( & DtString )
+{
+}
+
+DtValue::DtValue( const std::string & Str ) : Data( Str ), Type( & DtString )
+{
+}
+
+DtValue::DtValue( const std::vector<DtValue> & Arr ) : Data( Arr ), Type( & DtArray )
 {
 }
 
 DtValue::DtValue( const DtValue & Src ) : Data( Src.Data ), Type( Src.Type )
 {
-//    this->Data = Src.Data;
-//    this->Type = Src.Type;
 }
 
 DtValue DtValue::Size()
 {
     return this->Type->Size( *this );
+}
+
+DtValue & DtValue::operator = ( double Val )
+{
+    this->Data = Val;
+    this->Type = & DtDouble;
+    return *this;
+}
+
+DtValue & DtValue::operator = ( const char* Str )
+{
+    this->Data = std::string( Str );
+    this->Type = & DtString;
+    return *this;
+}
+
+DtValue & DtValue::operator = ( const std::string & Str )
+{
+    this->Data = Str;
+    this->Type = & DtString;
+    return *this;
+}
+
+DtValue & DtValue::operator = ( const std::vector<DtValue> & Arr )
+{
+    this->Data = Arr;
+    this->Type = & DtArray;
+    return *this;
 }
 
 DtValue & DtValue::operator = ( const DtValue & Rhs )

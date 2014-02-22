@@ -41,11 +41,3 @@ DtValue DataTypeString::Size( const DtValue & Lhs )
 }
 
 DataTypeString DtString;
-
-DtValue ALang::Dt::MakeString( const std::string & Val )
-{
-    DtValue Res;
-    Res.Data = Val;
-    Res.Type = & DtString;
-    return Res;
-}

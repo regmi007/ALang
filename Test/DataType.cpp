@@ -3,7 +3,6 @@
 #include "DataType.h"
 
 using ALang::Dt::DtValue;
-using ALang::Dt::MakeDouble;
 
 struct TestType
 {
@@ -32,12 +31,15 @@ struct TestType
 
 int main()
 {
-    DtValue V( 2.3, & DtDouble );
-    DtValue V1( std::string("asd"), & DtString );
-    DtValue V2( std::vector<DtValue>(), & DtArray );
+    DtValue V = 2.3;
+    DtValue V1 = "Hello World";
+    DtValue V2 =  std::vector<DtValue>();
 
     V2[0] = V;
-    V2[5] = V1;
+    V2[1] = V1;
+    V2[2] = V;
+    V2[3] = V1;
+    V2[5] = V;
 
     std::cout << V2 << " : " << V2.Size() << "\n";
 }

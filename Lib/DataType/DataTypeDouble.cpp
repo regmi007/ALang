@@ -73,11 +73,3 @@ void DataTypeDouble::To_Stream( std::ostream & Out, const DtValue & Rhs )
 }
 
 DataTypeDouble DtDouble;
-
-DtValue ALang::Dt::MakeDouble( double Val = 0 )
-{
-    DtValue Res;
-    Res.Data = Val;
-    Res.Type = & DtDouble;
-    return Res;
-}
