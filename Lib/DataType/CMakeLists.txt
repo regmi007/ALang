@@ -5,6 +5,6 @@ SET( LIB_DATATYPE_SRC
     DataTypeArray.cpp
 )
 
-ADD_LIBRARY( DataType
+ADD_LIBRARY( ALangDataType
     ${LIB_DATATYPE_SRC}
 )

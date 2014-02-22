@@ -1,4 +1,4 @@
-ADD_EXECUTABLE( TestDataType DataType.cpp )
-TARGET_LINK_LIBRARIES( TestDataType DataType )
+ADD_EXECUTABLE( DataType DataType.cpp )
+TARGET_LINK_LIBRARIES( DataType ALangDataType )
 
-ADD_TEST( DataType TestDataType )
+ADD_TEST( DataType DataType )
