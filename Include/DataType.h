@@ -1,83 +1,114 @@
 #ifndef __DATATYPE_H__
 #define __DATATYPE_H__
 
-enum class DataType_Message
-{
-    MSG_INIT,
+#include <string>
+#include <ostream>
+#include <boost/any.hpp>
 
-    MSG_ADD,
-    MSG_SUB,
-    MSG_MUL,
-    MSG_DIV,
+#include "Exception.h"
 
-    MSG_ADD_ASSIGN,
-    MSG_SUB_ASSIGN,
-    MSG_MUL_ASSIGN,
-    MSG_DIV_ASSIGN,
-    
-    MSG_PUSH_BACK;
-};
+namespace ALang { namespace Dt {
 
-struct DataValue;
+struct DtValue;
 
 struct DataType
 {
-    virtual void m_MessageHandler( DataType_Message Msg, DataValue *Res, DataValue *Lhs, DataValue *Rhs ) = 0;
-    virtual ~DataType() {}
+    ~DataType() {}
+
+    virtual DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
+
+    virtual DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
+
+    virtual DtValue Substract( const DtValue & Lhs, const DtValue & Rhs );
+
+    virtual DtValue Multiply( const DtValue & Lhs, const DtValue & Rhs );
+
+    virtual DtValue Divide( const DtValue & Lhs, const DtValue & Rhs );
+
+    virtual DtValue & SubScriptGet( const DtValue & Lhs, int Index );
+    virtual DtValue & SubScriptSet( DtValue & Lhs, int Index );
+
+    virtual DtValue Size( const DtValue & Lhs );
+
+    virtual void To_Stream( std::ostream & Out, const DtValue & Rhs );
 };
 
-struct DataType_Double : public DataType
+struct DataTypeDouble : public DataType 
 {
-    void m_MessageHandler( DataType_Message Msg, DataValue *Res, DataValue *Lhs, DataValue *Rhs );
+    DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue Substract( const DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue Multiply( const DtValue & Lhs,  const DtValue & Rhs );
+
+    DtValue Divide( const DtValue & Lhs, const DtValue & Rhs );
+
+    void To_Stream( std::ostream & Out, const DtValue & Rhs );
 };
 
-struct DataType_String : public DataType
+struct DataTypeString : public DataType
 {
-    void m_MessageHandler( DataType_Message Msg, DataValue *Res, DataValue *Lhs, DataValue *Rhs );
+//    DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue Size( const DtValue & Lhs );
+
+    void To_Stream( std::ostream & Out, const DtValue & Rhs );
 };
 
-struct DataValue
+struct DataTypeArray : public DataType
 {
-    union Res
-    {
-        double  Number;
-        void*   Pointer;
-    };
-    
-    Res
-        m_Data;
-        
+//    DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue Size( const DtValue & Lhs );
+
+    // Throws std::out_of_range if Index >= Array.Size()
+    DtValue & SubScriptGet( const DtValue & Lhs, int Index );
+
+    // Throws std::out_of_range if Index < 0
+    DtValue & SubScriptSet( DtValue & Lhs, int Index );
+
+    void To_Stream( std::ostream & Out, const DtValue & Rhs );
+};
+
+struct DtValue
+{
+    boost::any
+        Data;
+
     DataType
-        *m_Type;
+        *Type;
 
-    Data( DataType *Type ) : m_Type( Type ) { }
+    DtValue();
+    DtValue( const DtValue & Src );
+    DtValue( boost::any D, DataType *T );
+
+    DtValue & operator =  ( const DtValue & Rhs );
+    DtValue   operator +  ( const DtValue & Rhs );
+    DtValue   operator -  ( const DtValue & Rhs );
+    DtValue   operator *  ( const DtValue & Rhs );
+    DtValue   operator /  ( const DtValue & Rhs );
+
+    DtValue & operator [] ( int Index ) const;
+    DtValue & operator [] ( int Index );
+    
+    DtValue Size();
 };
 
-extern DataType_Double DtDouble;
-extern DataType_String DtString;
+DtValue MakeDouble( double Val );
+DtValue MakeString( const std::string & Val );
+DtValue MakeArray();
 
-struct DataValue_Double : public DataValue
-{
-    DataValue_Double() : DataValue( & DtDouble )
-    {
-        m_Type->MessageHandler( DataType_Message.MSG_INIT, nullptr, this, nullptr );
-    }
-};
+}} // Namespace Dt, ALang
 
-struct DataValue_String : public DataValue
-{
-    DataValue_String() : DataValue( & DtString )
-    {
-        m_Type->MessageHandler( DataType_Message.MSG_INIT, nullptr, this, nullptr );
-    }
-};
+std::ostream & operator << ( std::ostream & Out, const ALang::Dt::DtValue & Val );
 
-struct DataValue_Array : public DataValue
-{
-    DataValue_Array() : DataValue( & DtArray )
-    {
-        m_Type->MessageHandler( DataType_Message.MSG_INIT, nullptr, this, nullptr );
-    }
-};
+extern ALang::Dt::DataType       DtNull;
+extern ALang::Dt::DataTypeDouble DtDouble;
+extern ALang::Dt::DataTypeString DtString;
+extern ALang::Dt::DataTypeArray  DtArray;
 
 #endif

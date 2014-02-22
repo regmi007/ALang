@@ -1,19 +1,20 @@
-# Some comment
-# --------------------------
-#age = 12                # More comments
-#weight = 155.24
-#str2 = "Hi 'Again'"
-#Else
-#    weight = 49.46
+# ALang 
+#--------------------------
 
-Func my_func( a, b, c )
-    While z <= 3 
-        b = 2
+Func my_func( arr1, arr2 )
 
-        If x == 2
-            weight = 12.34
-        Elif x == 5
-            y = 3
-        Else
-            a = 3
-    x = 2
+    i = 0
+
+    While i < Size( arr1 )  # Size() is used to find the length of an array.
+
+        res = arr1[ i ] + arr1[ i ]
+        
+        Print( res )
+
+arr1 = 1, 'A'
+arr2 = 4, 'B'
+
+arr3 = 1.8, 'Hello-', arr1
+arr4 = 2.2, "-World", arr2
+
+my_func( arr1, arr2 )
