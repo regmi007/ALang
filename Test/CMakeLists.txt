@@ -1,3 +1,3 @@
-ADD_EXECUTABLE( TestDataType TestDataType.exe )
+ADD_EXECUTABLE( TestDataType TestDataType.cpp )
 TARGET_LINK_LIBRARIES( TestDataType DataType )
 

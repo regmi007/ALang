@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "DataType.h"
 
 using ALang::Dt::DtValue;
