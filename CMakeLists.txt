@@ -9,6 +9,8 @@ SET( ALang_VERSION_MINOR 0 )
 # so that it can be override through CMake.vars
 INCLUDE( CMake.vars OPTIONAL )
 
+ENABLE_TESTING()
+
 INCLUDE_DIRECTORIES ("${PROJECT_SOURCE_DIR}/Include")
 
 SET( CMAKE_MODULE_PATH "CMakeFiles/Modules" ${CMAKE_MODULE_PATH} )
