@@ -39,7 +39,6 @@ int main()
     V2[1] = V1;
     V2[2] = V;
     V2[3] = V1;
-    V2[5] = V;
 
     std::cout << V2 << " : " << V2.Size() << "\n";
 }

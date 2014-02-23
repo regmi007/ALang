@@ -22,9 +22,9 @@ DtValue DataTypeString::Add ( const DtValue & Lhs, const DtValue & Rhs )
     return Val;
 }
 
-void DataTypeString::To_Stream( std::ostream & Out, const DtValue & Rhs )
+void DataTypeString::ToStream( std::ostream & Out, const DtValue & Rhs )
 {
-    std::string *Str  = const_cast< std::string* >( boost::any_cast< std::string >( & Rhs.Data ));
+    std::string *Str = const_cast< std::string* >( boost::any_cast< std::string >( & Rhs.Data ));
     Out << "'" << *Str << "'";
 }
 

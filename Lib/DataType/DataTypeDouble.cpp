@@ -55,7 +55,7 @@ DtValue DataTypeDouble::Divide( const DtValue & Lhs, const DtValue & Rhs )
     return Val;
 }
 
-void DataTypeDouble::To_Stream( std::ostream & Out, const DtValue & Rhs )
+void DataTypeDouble::ToStream( std::ostream & Out, const DtValue & Rhs )
 {
     Out << boost::any_cast<double>( Rhs.Data );
 }

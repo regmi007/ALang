@@ -31,7 +31,7 @@ struct DataType
 
     virtual DtValue Size( const DtValue & Lhs );
 
-    virtual void To_Stream( std::ostream & Out, const DtValue & Rhs );
+    virtual void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
 
 struct DataTypeDouble : public DataType 
@@ -44,24 +44,20 @@ struct DataTypeDouble : public DataType
 
     DtValue Divide( const DtValue & Lhs, const DtValue & Rhs );
 
-    void To_Stream( std::ostream & Out, const DtValue & Rhs );
+    void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
 
 struct DataTypeString : public DataType
 {
-//    DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
-
     DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
 
     DtValue Size( const DtValue & Lhs );
 
-    void To_Stream( std::ostream & Out, const DtValue & Rhs );
+    void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
 
 struct DataTypeArray : public DataType
 {
-//    DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
-
     DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
 
     DtValue Size( const DtValue & Lhs );
@@ -72,7 +68,7 @@ struct DataTypeArray : public DataType
     // Throws std::out_of_range if Index < 0
     DtValue & SubScriptSet( DtValue & Lhs, std::size_t Index );
 
-    void To_Stream( std::ostream & Out, const DtValue & Rhs );
+    void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
 
 struct DtValue

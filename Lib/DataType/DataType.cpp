@@ -47,7 +47,7 @@ DtValue & DataType::SubScriptSet( DtValue & Lhs, std::size_t Index )
     throw OperationError( "Operation not implemented." );
 }
 
-void DataType::To_Stream( std::ostream & Out, const DtValue & Lhs )
+void DataType::ToStream( std::ostream & Out, const DtValue & Lhs )
 {
     throw OperationError( "Operation not implemented." );
 }
@@ -148,6 +148,6 @@ DtValue & DtValue::operator [] ( std::size_t Index )
 
 std::ostream & operator << ( std::ostream & Out, const DtValue & Val )
 {
-    Val.Type->To_Stream( Out, Val );
+    Val.Type->ToStream( Out, Val );
     return Out;
 }
