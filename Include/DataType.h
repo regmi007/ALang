@@ -3,6 +3,7 @@
 
 #include <string>
 #include <ostream>
+#include <cstddef>
 #include <boost/any.hpp>
 
 #include "Exception.h"
@@ -25,8 +26,8 @@ struct DataType
 
     virtual DtValue Divide( const DtValue & Lhs, const DtValue & Rhs );
 
-    virtual DtValue & SubScriptGet( const DtValue & Lhs, int Index );
-    virtual DtValue & SubScriptSet( DtValue & Lhs, int Index );
+    virtual DtValue & SubScriptGet( const DtValue & Lhs, std::size_t Index );
+    virtual DtValue & SubScriptSet( DtValue & Lhs, std::size_t Index );
 
     virtual DtValue Size( const DtValue & Lhs );
 
@@ -66,10 +67,10 @@ struct DataTypeArray : public DataType
     DtValue Size( const DtValue & Lhs );
 
     // Throws std::out_of_range if Index >= Array.Size()
-    DtValue & SubScriptGet( const DtValue & Lhs, int Index );
+    DtValue & SubScriptGet( const DtValue & Lhs, std::size_t Index );
 
     // Throws std::out_of_range if Index < 0
-    DtValue & SubScriptSet( DtValue & Lhs, int Index );
+    DtValue & SubScriptSet( DtValue & Lhs, std::size_t Index );
 
     void To_Stream( std::ostream & Out, const DtValue & Rhs );
 };
@@ -102,8 +103,8 @@ struct DtValue
     DtValue   operator *  ( const DtValue & Rhs );
     DtValue   operator /  ( const DtValue & Rhs );
 
-    DtValue & operator [] ( int Index ) const;
-    DtValue & operator [] ( int Index );
+    DtValue & operator [] ( std::size_t Index ) const;
+    DtValue & operator [] ( std::size_t Index );
     
     DtValue Size();
 };

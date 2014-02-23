@@ -37,12 +37,12 @@ DtValue DataType::Size( const DtValue & Lhs )
     throw OperationError( "Operation not implemented." );
 }
 
-DtValue & DataType::SubScriptGet( const DtValue & Lhs, int Index )
+DtValue & DataType::SubScriptGet( const DtValue & Lhs, std::size_t Index )
 {
     throw OperationError( "Operation not implemented." );
 }
 
-DtValue & DataType::SubScriptSet( DtValue & Lhs, int Index )
+DtValue & DataType::SubScriptSet( DtValue & Lhs, std::size_t Index )
 {
     throw OperationError( "Operation not implemented." );
 }
@@ -136,12 +136,12 @@ DtValue DtValue::operator / ( const DtValue & Rhs )
     return this->Type->Divide( *this, Rhs );
 }
 
-DtValue & DtValue::operator [] ( int Index ) const
+DtValue & DtValue::operator [] ( std::size_t Index ) const
 {
     return this->Type->SubScriptGet( *this, Index );
 }
 
-DtValue & DtValue::operator [] ( int Index )
+DtValue & DtValue::operator [] ( std::size_t Index )
 {
     return this->Type->SubScriptSet( *this, Index );
 }

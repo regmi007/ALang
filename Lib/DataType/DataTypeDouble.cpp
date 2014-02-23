@@ -7,18 +7,6 @@ using ALang::Dt::DataTypeDouble;
 
 using ALang::Error::OperationError;
 
-/*
-DtValue & DataTypeDouble::Assign( DtValue & Lhs, const DtValue & Rhs )
-{
-    if( Rhs.Data.type() != typeid( double ) )
-        throw OperationError( "Cannot assign type other than DataTypeDouble." );
-
-    Lhs.Data = Rhs.Data;
-
-    return Lhs;
-}
-*/
-
 DtValue DataTypeDouble::Add( const DtValue & Lhs, const DtValue & Rhs )
 {
     if( Rhs.Data.type() != typeid( double ) )

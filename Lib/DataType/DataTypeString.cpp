@@ -5,38 +5,33 @@ using ALang::Dt::DataTypeString;
 
 using ALang::Error::OperationError;
 
-/*
-DtValue & DataTypeString::Assign( DtValue & Lhs, const DtValue & Rhs )
-{
-    if( Rhs.Data.type() != typeid( std::string ) )
-        throw OperationError( "Cannot assigh type other than DataTypeString." );
-
-    Lhs.Data = Rhs.Data;
-    return Lhs;
-}
-*/
-
 DtValue DataTypeString::Add ( const DtValue & Lhs, const DtValue & Rhs )
 {
     if( Rhs.Data.type() != typeid( std::string ) )
         throw OperationError( "Cannot add type other than DataTypeString." );
 
-    DtValue Val;
-    Val.Data = boost::any_cast<std::string>( Lhs.Data ) + boost::any_cast<std::string>( Rhs.Data );
-    Val.Type = Lhs.Type;
+    DtValue Val = std::string();
+
+    std::string *PVal  = boost::any_cast< std::string >( & Val.Data );
+    std::string *PLhs  = const_cast< std::string* >( boost::any_cast< std::string >( & Lhs.Data ));
+    std::string *PRhs  = const_cast< std::string* >( boost::any_cast< std::string >( & Rhs.Data ));
+
+    PVal->append( PLhs->c_str() );
+    PVal->append( PRhs->c_str() );
+
     return Val;
 }
 
 void DataTypeString::To_Stream( std::ostream & Out, const DtValue & Rhs )
 {
-    Out << "'" << boost::any_cast<std::string>( Rhs.Data ) << "'";
+    std::string *Str  = const_cast< std::string* >( boost::any_cast< std::string >( & Rhs.Data ));
+    Out << "'" << *Str << "'";
 }
 
 DtValue DataTypeString::Size( const DtValue & Lhs )
 {
-    DtValue Val;
-    Val.Data = boost::any_cast<std::string>( Lhs.Data ).size();
-    Val.Type = & DtDouble;
+    std::string *Str  = const_cast< std::string* >( boost::any_cast< std::string >( & Lhs.Data ));
+    DtValue Val = ( double ) Str->size();
     return Val;
 }
 
