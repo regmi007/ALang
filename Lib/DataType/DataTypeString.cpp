@@ -13,8 +13,8 @@ DtValue DataTypeString::Add ( const DtValue & Lhs, const DtValue & Rhs )
     DtValue Val = std::string();
 
     std::string *PVal  = boost::any_cast< std::string >( & Val.Data );
-    std::string *PLhs  = const_cast< std::string* >( boost::any_cast< std::string >( & Lhs.Data ));
-    std::string *PRhs  = const_cast< std::string* >( boost::any_cast< std::string >( & Rhs.Data ));
+    const std::string *PLhs  = boost::any_cast< const std::string >( & Lhs.Data );
+    const std::string *PRhs  = boost::any_cast< const std::string >( & Rhs.Data );
 
     PVal->append( PLhs->c_str() );
     PVal->append( PRhs->c_str() );
@@ -22,15 +22,29 @@ DtValue DataTypeString::Add ( const DtValue & Lhs, const DtValue & Rhs )
     return Val;
 }
 
+DtValue & DataTypeString::AddAssign( DtValue & Lhs, const DtValue & Rhs )
+{
+    if( Rhs.Data.type() != typeid( std::string ) )
+        throw OperationError( "Cannot add type other than DataTypeString." );
+
+    std::string *PLhs = boost::any_cast< std::string >( & Lhs.Data );
+    const std::string *PRhs  = boost::any_cast< const std::string >( & Rhs.Data );
+
+    PLhs->append( PRhs->c_str() );
+
+    return Lhs;
+}
+
+
 void DataTypeString::ToStream( std::ostream & Out, const DtValue & Rhs )
 {
-    std::string *Str = const_cast< std::string* >( boost::any_cast< std::string >( & Rhs.Data ));
+    const std::string *Str = boost::any_cast< const std::string >( & Rhs.Data );
     Out << "'" << *Str << "'";
 }
 
 DtValue DataTypeString::Size( const DtValue & Lhs )
 {
-    std::string *Str  = const_cast< std::string* >( boost::any_cast< std::string >( & Lhs.Data ));
+    const std::string *Str  = boost::any_cast< const std::string >( & Lhs.Data );
     DtValue Val = ( double ) Str->size();
     return Val;
 }

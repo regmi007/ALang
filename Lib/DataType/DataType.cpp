@@ -32,6 +32,26 @@ DtValue DataType::Divide( const DtValue & Lhs, const DtValue & Rhs )
     throw OperationError( "Operation not implemented." );
 }
 
+DtValue & DataType::AddAssign( DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( "Operation not implemented." );
+}
+
+DtValue & DataType::SubstractAssign( DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( "Operation not implemented." );
+}
+
+DtValue & DataType::MultiplyAssign( DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( "Operation not implemented." );
+}
+
+DtValue & DataType::DivideAssign( DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( "Operation not implemented." );
+}
+
 DtValue DataType::Size( const DtValue & Lhs )
 {
     throw OperationError( "Operation not implemented." );
@@ -76,11 +96,6 @@ DtValue::DtValue( const std::vector<DtValue> & Arr ) : Data( Arr ), Type( & DtAr
 
 DtValue::DtValue( const DtValue & Src ) : Data( Src.Data ), Type( Src.Type )
 {
-}
-
-DtValue DtValue::Size()
-{
-    return this->Type->Size( *this );
 }
 
 DtValue & DtValue::operator = ( double Val )
@@ -136,6 +151,26 @@ DtValue DtValue::operator / ( const DtValue & Rhs )
     return this->Type->Divide( *this, Rhs );
 }
 
+DtValue & DtValue::operator += ( const DtValue & Rhs )
+{
+    return this->Type->AddAssign( *this, Rhs );
+}
+
+DtValue & DtValue::operator -= ( const DtValue & Rhs )
+{
+    return this->Type->SubstractAssign( *this, Rhs );
+}
+
+DtValue & DtValue::operator *= ( const DtValue & Rhs )
+{
+    return this->Type->MultiplyAssign( *this, Rhs );
+}
+
+DtValue & DtValue::operator /= ( const DtValue & Rhs )
+{
+    return this->Type->DivideAssign( *this, Rhs );
+}
+
 DtValue & DtValue::operator [] ( std::size_t Index ) const
 {
     return this->Type->SubScriptGet( *this, Index );
@@ -144,6 +179,11 @@ DtValue & DtValue::operator [] ( std::size_t Index ) const
 DtValue & DtValue::operator [] ( std::size_t Index )
 {
     return this->Type->SubScriptSet( *this, Index );
+}
+
+DtValue ALang::Dt::Size( const DtValue & Val ) 
+{
+    return Val.Type->Size( Val );
 }
 
 std::ostream & operator << ( std::ostream & Out, const DtValue & Val )

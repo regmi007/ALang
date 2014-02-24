@@ -3,42 +3,26 @@
 #include "DataType.h"
 
 using ALang::Dt::DtValue;
-
-struct TestType
-{
-    TestType()
-    {
-        std::cout << "Created\n";
-        Value = 0;
-    }
-
-    TestType( const TestType & T )
-    {
-        Value = T.Value;
-        std::cout << "Copy Created\n";
-    }
-
-    TestType & operator = ( const TestType & T )
-    {
-        std::cout << "Copying.\n";
-        Value = T.Value;
-
-        return *this;
-    }
-
-    int Value;
-};
+using ALang::Dt::Size;
 
 int main()
 {
-    DtValue V = 2.3;
-    DtValue V1 = "Hello World";
-    DtValue V2 =  std::vector<DtValue>();
+    DtValue d1 = 2.3, d2 = 3.5;
+    DtValue s1 = "Hello ", s2 = "World";
+    DtValue a1 =  std::vector<DtValue>();
+    DtValue a2 =  std::vector<DtValue>();
 
-    V2[0] = V;
-    V2[1] = V1;
-    V2[2] = V;
-    V2[3] = V1;
+    a1[0] = d1;
+    a1[1] = s1;
 
-    std::cout << V2 << " : " << V2.Size() << "\n";
+    a2[0] = d2;
+    a1[1] = s2;
+    
+    d1 += d2;
+    s1 += s2;
+    a1 += a2;
+
+    std::cout << "a1 Size: " << Size( a1 ) << "\n";
+    std::cout << "d1: " << d1 << "\n";
+    std::cout << "s1: " << s1 << "\n";
 }

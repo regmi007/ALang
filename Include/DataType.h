@@ -19,12 +19,14 @@ struct DataType
     virtual DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
 
     virtual DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
-
     virtual DtValue Substract( const DtValue & Lhs, const DtValue & Rhs );
-
     virtual DtValue Multiply( const DtValue & Lhs, const DtValue & Rhs );
-
     virtual DtValue Divide( const DtValue & Lhs, const DtValue & Rhs );
+
+    virtual DtValue & AddAssign( DtValue & Lhs, const DtValue & Rhs );
+    virtual DtValue & SubstractAssign( DtValue & Lhs, const DtValue & Rhs );
+    virtual DtValue & MultiplyAssign( DtValue & Lhs, const DtValue & Rhs );
+    virtual DtValue & DivideAssign( DtValue & Lhs, const DtValue & Rhs );
 
     virtual DtValue & SubScriptGet( const DtValue & Lhs, std::size_t Index );
     virtual DtValue & SubScriptSet( DtValue & Lhs, std::size_t Index );
@@ -37,12 +39,14 @@ struct DataType
 struct DataTypeDouble : public DataType 
 {
     DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
-
     DtValue Substract( const DtValue & Lhs, const DtValue & Rhs );
-
     DtValue Multiply( const DtValue & Lhs,  const DtValue & Rhs );
-
     DtValue Divide( const DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue & AddAssign( DtValue & Lhs, const DtValue & Rhs );
+    DtValue & SubstractAssign( DtValue & Lhs, const DtValue & Rhs );
+    DtValue & MultiplyAssign( DtValue & Lhs, const DtValue & Rhs );
+    DtValue & DivideAssign( DtValue & Lhs, const DtValue & Rhs );
 
     void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
@@ -50,6 +54,8 @@ struct DataTypeDouble : public DataType
 struct DataTypeString : public DataType
 {
     DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue & AddAssign( DtValue & Lhs, const DtValue & Rhs );
 
     DtValue Size( const DtValue & Lhs );
 
@@ -59,6 +65,8 @@ struct DataTypeString : public DataType
 struct DataTypeArray : public DataType
 {
     DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
+
+    DtValue & AddAssign( DtValue & Lhs, const DtValue & Rhs );
 
     DtValue Size( const DtValue & Lhs );
 
@@ -99,11 +107,16 @@ struct DtValue
     DtValue   operator *  ( const DtValue & Rhs );
     DtValue   operator /  ( const DtValue & Rhs );
 
+    DtValue & operator += ( const DtValue & Rhs );
+    DtValue & operator -= ( const DtValue & Rhs );
+    DtValue & operator *= ( const DtValue & Rhs );
+    DtValue & operator /= ( const DtValue & Rhs );
+
     DtValue & operator [] ( std::size_t Index ) const;
     DtValue & operator [] ( std::size_t Index );
-    
-    DtValue Size();
 };
+
+DtValue Size( const DtValue & Val );
 
 }} // Namespace Dt, ALang
 

@@ -15,8 +15,8 @@ DtValue DataTypeArray::Add ( const DtValue & Lhs, const DtValue & Rhs )
     DtValue Val = std::vector< DtValue >();
     std::vector<DtValue> *PVal = const_cast< std::vector< DtValue >* >( boost::any_cast< std::vector< DtValue >>( & Val.Data ));
 
-    std::vector<DtValue> *PLhs = const_cast< std::vector< DtValue >* >( boost::any_cast< std::vector< DtValue >>( & Lhs.Data ));
-    std::vector<DtValue> *PRhs = const_cast< std::vector< DtValue >* >( boost::any_cast< std::vector< DtValue >>( & Rhs.Data ));
+    const std::vector<DtValue> *PLhs = boost::any_cast< const std::vector< DtValue >>( & Lhs.Data );
+    const std::vector<DtValue> *PRhs = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
 
     std::size_t Size = PLhs->size();
 
@@ -31,9 +31,25 @@ DtValue DataTypeArray::Add ( const DtValue & Lhs, const DtValue & Rhs )
    return Val;
 }
 
+DtValue & DataTypeArray::AddAssign( DtValue & Lhs, const DtValue & Rhs )
+{
+    if( Rhs.Data.type() != typeid( std::vector< DtValue > ) )
+        throw OperationError( "Cannot add type other than DataTypeString." );
+
+    std::vector<DtValue> *PLhs = boost::any_cast< std::vector< DtValue >>( & Lhs.Data );
+    const std::vector<DtValue> *PRhs = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
+
+    std::size_t Size = PRhs->size();
+
+    for( std::size_t i = 0; i < Size; ++i )
+        PLhs->push_back( ( *PRhs )[ i ]);
+
+   return Lhs;
+}
+
 void DataTypeArray::ToStream( std::ostream & Out, const DtValue & Rhs )
 {
-    std::vector<DtValue> *Vec = const_cast<std::vector<DtValue>*>( boost::any_cast<std::vector<DtValue>>( & Rhs.Data ));
+    const std::vector<DtValue> *Vec = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
     std::size_t Size = Vec->size();
 
     Out << "[ ";
@@ -49,14 +65,15 @@ void DataTypeArray::ToStream( std::ostream & Out, const DtValue & Rhs )
 
 DtValue DataTypeArray::Size( const DtValue & Lhs )
 {
-    std::vector<DtValue> *Vec = const_cast<std::vector<DtValue>*>( boost::any_cast<std::vector<DtValue>>( & Lhs.Data ));
+    const std::vector< DtValue > *Vec = boost::any_cast< const std::vector< DtValue >>( & Lhs.Data );
     DtValue Val = ( double ) Vec->size();
     return Val;
 }
 
 DtValue & DataTypeArray::SubScriptGet( const DtValue & Lhs, std::size_t Index )
 {
-    std::vector<DtValue> *Vec = const_cast<std::vector<DtValue>*>( boost::any_cast<std::vector<DtValue>>( & Lhs.Data ));
+    std::vector< DtValue > *Vec = const_cast< std::vector< DtValue >* >( boost::any_cast< const std::vector< DtValue >>( & Lhs.Data ));
+    //const std::vector< DtValue > *Vec = boost::any_cast< const std::vector< DtValue > > ( & Lhs.Data );
     return Vec->at( Index );
 }
 
