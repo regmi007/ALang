@@ -12,7 +12,7 @@ int main()
     DtValue a1 =  std::vector<DtValue>();
     DtValue a2 =  std::vector<DtValue>();
 
-    d1 = & d2;
+//    d1 = & d2;
 
     std::cout << d1 << "\n";
 
@@ -20,13 +20,14 @@ int main()
     a1[1] = s1;
 
     a2[0] = d2;
-    a1[1] = s2;
-    
-    d1 += d2;
-    s1 += s2;
-    a1 += a2;
+    a2[1] = & a1;
 
-    std::cout << "a1 Size: " << Size( a1 ) << "\n";
-    std::cout << "d1: " << d1 << "\n";
-    std::cout << "s1: " << s1 << "\n";
+    a2[ "Hi" ] = 1;
+    
+    std::cout << a1 << "Size: " << Size( a1 ) << "\n";
+    std::cout << a2 << "Size: " << Size( a2 ) << "\n";
+    
+    a1[0] = 9;
+
+    std::cout << a2 << "Size: " << Size( a2 ) << "\n";
 }

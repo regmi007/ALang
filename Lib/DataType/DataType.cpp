@@ -21,62 +21,102 @@ DtValue & DataType::Assign( DtValue & Lhs, DtValue * Rhs )
 
 DtValue DataType::Add( const DtValue & Lhs, const DtValue & Rhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "+, Operation not implemented." );
 }
 
 DtValue DataType::Substract( const DtValue & Lhs, const DtValue & Rhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "-, Operation not implemented." );
 }
 
 DtValue DataType::Multiply( const DtValue & Lhs, const DtValue & Rhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "*, Operation not implemented." );
 }
 
 DtValue DataType::Divide( const DtValue & Lhs, const DtValue & Rhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "/, Operation not implemented." );
 }
 
 DtValue & DataType::AddAssign( DtValue & Lhs, const DtValue & Rhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "+=, Operation not implemented." );
 }
 
 DtValue & DataType::SubstractAssign( DtValue & Lhs, const DtValue & Rhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "-=, Operation not implemented." );
 }
 
 DtValue & DataType::MultiplyAssign( DtValue & Lhs, const DtValue & Rhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "*=, Operation not implemented." );
 }
 
 DtValue & DataType::DivideAssign( DtValue & Lhs, const DtValue & Rhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "/=, Operation not implemented." );
+}
+
+bool DataType::LessThan( const DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( "<, Operation not implemented." );
+}
+
+bool DataType::GreaterThan( const DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( ">, Operation not implemented." );
+}
+
+bool DataType::LessThanEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( "<=, Operation not implemented." );
+}
+
+bool DataType::GreaterThanEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( ">=, Operation not implemented." );
+}
+
+bool DataType::EqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( "==, Operation not implemented." );
+}
+
+bool DataType::NotEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    throw OperationError( "!=, Operation not implemented." );
 }
 
 DtValue DataType::Size( const DtValue & Lhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "Size(), Operation not implemented." );
 }
 
 DtValue & DataType::SubScriptGetIndex( const DtValue & Lhs, std::size_t Index )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "DtValue[ Index ], Operation not implemented." );
 }
 
 DtValue & DataType::SubScriptSetIndex( DtValue & Lhs, std::size_t Index )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "DtValue[ Index ], Operation not implemented." );
+}
+
+DtValue & DataType::SubScriptGetKey( const DtValue & Lhs, const std::string & Key )
+{
+    throw OperationError( "DtValue[ \"Key\" ],  Operation not implemented." );
+}
+
+DtValue & DataType::SubScriptSetKey( DtValue & Lhs, const std::string & Key )
+{
+    throw OperationError( "DtValue[ \"Key\" ], Operation not implemented." );
 }
 
 void DataType::ToStream( std::ostream & Out, const DtValue & Lhs )
 {
-    throw OperationError( "Operation not implemented." );
+    throw OperationError( "ostream << DtValue, Operation not implemented." );
 }
 
 DataType DtNull;
@@ -183,6 +223,36 @@ DtValue & DtValue::operator /= ( const DtValue & Rhs )
     return this->Type->DivideAssign( *this, Rhs );
 }
 
+bool DtValue::operator < ( const DtValue & Rhs )
+{
+    return this->Type->LessThan( *this, Rhs );
+}
+
+bool DtValue::operator > ( const DtValue & Rhs )
+{
+    return this->Type->GreaterThan( *this, Rhs );
+}
+
+bool DtValue::operator <= ( const DtValue & Rhs )
+{
+    return this->Type->LessThanEqualTo( *this, Rhs );
+}
+
+bool DtValue::operator >= ( const DtValue & Rhs )
+{
+    return this->Type->GreaterThanEqualTo( *this, Rhs );
+}
+
+bool DtValue::operator == ( const DtValue & Rhs )
+{
+    return this->Type->EqualTo( *this, Rhs );
+}
+
+bool DtValue::operator != ( const DtValue & Rhs )
+{
+    return this->Type->NotEqualTo( *this, Rhs );
+}
+
 DtValue & DtValue::operator [] ( std::size_t Index ) const
 {
     return this->Type->SubScriptGetIndex( *this, Index );
@@ -191,6 +261,16 @@ DtValue & DtValue::operator [] ( std::size_t Index ) const
 DtValue & DtValue::operator [] ( std::size_t Index )
 {
     return this->Type->SubScriptSetIndex( *this, Index );
+}
+
+DtValue & DtValue::operator [] ( const std::string & Key ) const
+{
+    return this->Type->SubScriptGetKey( *this, Key );
+}
+
+DtValue & DtValue::operator [] ( const std::string & Key )
+{
+    return this->Type->SubScriptSetKey( *this, Key );
 }
 
 DtValue ALang::Dt::Size( const DtValue & Val ) 
