@@ -12,6 +12,10 @@ int main()
     DtValue a1 =  std::vector<DtValue>();
     DtValue a2 =  std::vector<DtValue>();
 
+    d1 = & d2;
+
+    std::cout << d1 << "\n";
+
     a1[0] = d1;
     a1[1] = s1;
 

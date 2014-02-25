@@ -17,6 +17,7 @@ struct DataType
     ~DataType() {}
 
     virtual DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
+    virtual DtValue & Assign( DtValue & Lhs,       DtValue * Rhs );
 
     virtual DtValue Add( const DtValue & Lhs, const DtValue & Rhs );
     virtual DtValue Substract( const DtValue & Lhs, const DtValue & Rhs );
@@ -28,8 +29,8 @@ struct DataType
     virtual DtValue & MultiplyAssign( DtValue & Lhs, const DtValue & Rhs );
     virtual DtValue & DivideAssign( DtValue & Lhs, const DtValue & Rhs );
 
-    virtual DtValue & SubScriptGet( const DtValue & Lhs, std::size_t Index );
-    virtual DtValue & SubScriptSet( DtValue & Lhs, std::size_t Index );
+    virtual DtValue & SubScriptGetIndex( const DtValue & Lhs, std::size_t Index );
+    virtual DtValue & SubScriptSetIndex( DtValue & Lhs, std::size_t Index );
 
     virtual DtValue Size( const DtValue & Lhs );
 
@@ -71,10 +72,10 @@ struct DataTypeArray : public DataType
     DtValue Size( const DtValue & Lhs );
 
     // Throws std::out_of_range if Index >= Array.Size()
-    DtValue & SubScriptGet( const DtValue & Lhs, std::size_t Index );
+    DtValue & SubScriptGetIndex( const DtValue & Lhs, std::size_t Index );
 
     // Throws std::out_of_range if Index < 0
-    DtValue & SubScriptSet( DtValue & Lhs, std::size_t Index );
+    DtValue & SubScriptSetIndex( DtValue & Lhs, std::size_t Index );
 
     void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
@@ -99,6 +100,7 @@ struct DtValue
     DtValue & operator =  ( double Rhs );
     DtValue & operator =  ( const char* Rhs );
     DtValue & operator =  ( const DtValue & Rhs );
+    DtValue & operator =  (       DtValue * Rhs );
     DtValue & operator =  ( const std::string & Rhs );
     DtValue & operator =  ( const std::vector<DtValue> & Rhs );
 

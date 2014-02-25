@@ -7,55 +7,97 @@ using ALang::Dt::DataTypeArray;
 
 using ALang::Error::OperationError;
 
-DtValue DataTypeArray::Add ( const DtValue & Lhs, const DtValue & Rhs )
+DtValue DataTypeArray::Add( const DtValue & Lhs, const DtValue & Rhs )
 {
-    if( Rhs.Data.type() != typeid( std::vector< DtValue > ) )
-        throw OperationError( "Cannot add type other than DataTypeString." );
+    const std::vector<DtValue> *PVecRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( std::vector<DtValue> ) )
+        PVecRhs = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PVecRhs = boost::any_cast< const std::vector< DtValue >>( PData );        
+    }
+
+    const std::vector<DtValue> *PVecLhs = nullptr;
+    
+    if( Lhs.Data.type() == typeid( std::vector<DtValue> ) )
+        PVecLhs = boost::any_cast< const std::vector< DtValue >>( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< const std::vector< DtValue >>( PData );        
+    }
 
     DtValue Val = std::vector< DtValue >();
-    std::vector<DtValue> *PVal = const_cast< std::vector< DtValue >* >( boost::any_cast< std::vector< DtValue >>( & Val.Data ));
+    std::vector<DtValue> *PVecVal = boost::any_cast< std::vector< DtValue >>( & Val.Data );
 
-    const std::vector<DtValue> *PLhs = boost::any_cast< const std::vector< DtValue >>( & Lhs.Data );
-    const std::vector<DtValue> *PRhs = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
-
-    std::size_t Size = PLhs->size();
+    std::size_t Size = PVecLhs->size();
 
     for( std::size_t i = 0; i < Size; ++i )
-        PVal->push_back( ( *PLhs )[ i ]);
+        PVecVal->push_back( ( *PVecLhs )[ i ]);
 
-    Size = PRhs->size();
+    Size = PVecRhs->size();
 
     for( std::size_t i = 0; i < Size; ++i )
-        PVal->push_back( ( *PRhs )[ i ]);
+        PVecVal->push_back( ( *PVecRhs )[ i ]);
  
    return Val;
 }
 
 DtValue & DataTypeArray::AddAssign( DtValue & Lhs, const DtValue & Rhs )
 {
-    if( Rhs.Data.type() != typeid( std::vector< DtValue > ) )
-        throw OperationError( "Cannot add type other than DataTypeString." );
+    const std::vector<DtValue> *PVecRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( std::vector<DtValue> ) )
+        PVecRhs = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
 
-    std::vector<DtValue> *PLhs = boost::any_cast< std::vector< DtValue >>( & Lhs.Data );
-    const std::vector<DtValue> *PRhs = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PVecRhs = boost::any_cast< const std::vector< DtValue >>( PData );        
+    }
+    
+    std::vector<DtValue> *PVecLhs = nullptr;
+    
+    if( Lhs.Data.type() == typeid( std::vector<DtValue> ) )
+        PVecLhs = boost::any_cast< std::vector< DtValue >>( & Lhs.Data );
 
-    std::size_t Size = PRhs->size();
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< std::vector< DtValue >>( PData );        
+    }
+
+    std::size_t Size = PVecRhs->size();
 
     for( std::size_t i = 0; i < Size; ++i )
-        PLhs->push_back( ( *PRhs )[ i ]);
+        PVecLhs->push_back( ( *PVecRhs )[ i ]);
 
    return Lhs;
 }
 
 void DataTypeArray::ToStream( std::ostream & Out, const DtValue & Rhs )
 {
-    const std::vector<DtValue> *Vec = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
-    std::size_t Size = Vec->size();
+    const std::vector<DtValue> *PVecRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( std::vector<DtValue> ) )
+        PVecRhs = boost::any_cast< const std::vector< DtValue >>( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PVecRhs = boost::any_cast< const std::vector< DtValue >>( PData );        
+    }
+    
+    std::size_t Size = PVecRhs->size();
 
     Out << "[ ";
     for( std::size_t i = 0; i < Size; ++i )
     {
-        Out << ( *Vec )[ i ];
+        Out << ( *PVecRhs )[ i ];
 
         if( i != Size - 1 )
             Out << ", ";
@@ -65,38 +107,62 @@ void DataTypeArray::ToStream( std::ostream & Out, const DtValue & Rhs )
 
 DtValue DataTypeArray::Size( const DtValue & Lhs )
 {
-    const std::vector< DtValue > *Vec = boost::any_cast< const std::vector< DtValue >>( & Lhs.Data );
-    DtValue Val = ( double ) Vec->size();
+    const std::vector<DtValue> *PVecLhs = nullptr;
+
+    if( Lhs.Data.type() == typeid( std::vector<DtValue> ) )
+        PVecLhs = boost::any_cast< const std::vector< DtValue >>( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< const std::vector< DtValue >>( PData );        
+    }
+
+    DtValue Val = ( double ) PVecLhs->size();
     return Val;
 }
 
-DtValue & DataTypeArray::SubScriptGet( const DtValue & Lhs, std::size_t Index )
+DtValue & DataTypeArray::SubScriptGetIndex( const DtValue & Lhs, std::size_t Index )
 {
-    std::vector< DtValue > *Vec = const_cast< std::vector< DtValue >* >( boost::any_cast< const std::vector< DtValue >>( & Lhs.Data ));
-    //const std::vector< DtValue > *Vec = boost::any_cast< const std::vector< DtValue > > ( & Lhs.Data );
-    return Vec->at( Index );
+    const std::vector<DtValue> *PVecLhs = nullptr;
+    
+    if( Lhs.Data.type() == typeid( std::vector<DtValue> ) )
+        PVecLhs = boost::any_cast< const std::vector< DtValue >>( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< const std::vector< DtValue >>( PData );        
+    }
+    
+    return const_cast< std::vector< DtValue >* >( PVecLhs )->at( Index );
 }
 
-
-DtValue & DataTypeArray::SubScriptSet( DtValue & Lhs, std::size_t Index )
+DtValue & DataTypeArray::SubScriptSetIndex( DtValue & Lhs, std::size_t Index )
 {
-    if( Index < 0 )
-        throw std::out_of_range( "Index can't be less than 0." );
+    std::vector<DtValue> *PVecLhs = nullptr;
 
-    std::vector< DtValue > *Vec = boost::any_cast<std::vector<DtValue>>( & Lhs.Data );
+    if( Lhs.Data.type() == typeid( std::vector<DtValue> ) )
+        PVecLhs = boost::any_cast< std::vector< DtValue >>( & Lhs.Data );
 
-    if( Index < Vec->size() )
-        return ( *Vec )[ Index ];
-
-    if( Index == Vec->size() )
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
     {
-        DtValue V;
-        Vec->push_back( V );
-        return (*Vec)[ Index ];
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< std::vector< DtValue >>( PData );        
     }
 
-    Vec->resize( Index + 1 );
-    return ( *Vec )[ Index ];
+    if( Index < PVecLhs->size() )
+        return ( *PVecLhs )[ Index ];
+
+    if( Index == PVecLhs->size() )
+    {
+        DtValue V;
+        PVecLhs->push_back( V );
+        return ( *PVecLhs )[ Index ];
+    }
+
+    PVecLhs->resize( Index + 1 );
+    return ( *PVecLhs )[ Index ];
 }
 
 DataTypeArray DtArray;

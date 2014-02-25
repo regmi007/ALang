@@ -109,7 +109,19 @@ DtValue & DataTypeDouble::DivideAssign( DtValue & Lhs, const DtValue & Rhs )
 
 void DataTypeDouble::ToStream( std::ostream & Out, const DtValue & Rhs )
 {
-    Out << boost::any_cast< double >( Rhs.Data );
+    const double *PRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( double ) )
+        PRhs = boost::any_cast< const double >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PRhs = boost::any_cast< const double >( PData );        
+    }
+
+    if( PRhs != nullptr )
+        Out << *PRhs;
 }
 
 DataTypeDouble DtDouble;

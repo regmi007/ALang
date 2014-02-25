@@ -12,6 +12,13 @@ DtValue & DataType::Assign( DtValue & Lhs, const DtValue & Rhs )
     return Lhs;
 }
 
+DtValue & DataType::Assign( DtValue & Lhs, DtValue * Rhs )
+{
+    Lhs.Data = & Rhs->Data;
+    Lhs.Type = Rhs->Type;
+    return Lhs;
+}
+
 DtValue DataType::Add( const DtValue & Lhs, const DtValue & Rhs )
 {
     throw OperationError( "Operation not implemented." );
@@ -57,12 +64,12 @@ DtValue DataType::Size( const DtValue & Lhs )
     throw OperationError( "Operation not implemented." );
 }
 
-DtValue & DataType::SubScriptGet( const DtValue & Lhs, std::size_t Index )
+DtValue & DataType::SubScriptGetIndex( const DtValue & Lhs, std::size_t Index )
 {
     throw OperationError( "Operation not implemented." );
 }
 
-DtValue & DataType::SubScriptSet( DtValue & Lhs, std::size_t Index )
+DtValue & DataType::SubScriptSetIndex( DtValue & Lhs, std::size_t Index )
 {
     throw OperationError( "Operation not implemented." );
 }
@@ -131,6 +138,11 @@ DtValue & DtValue::operator = ( const DtValue & Rhs )
     return this->Type->Assign( *this, Rhs );
 }
 
+DtValue & DtValue::operator = ( DtValue * Rhs )
+{
+    return this->Type->Assign( *this, Rhs );
+}
+
 DtValue DtValue::operator + ( const DtValue & Rhs )
 {
     return this->Type->Add( *this, Rhs );
@@ -173,12 +185,12 @@ DtValue & DtValue::operator /= ( const DtValue & Rhs )
 
 DtValue & DtValue::operator [] ( std::size_t Index ) const
 {
-    return this->Type->SubScriptGet( *this, Index );
+    return this->Type->SubScriptGetIndex( *this, Index );
 }
 
 DtValue & DtValue::operator [] ( std::size_t Index )
 {
-    return this->Type->SubScriptSet( *this, Index );
+    return this->Type->SubScriptSetIndex( *this, Index );
 }
 
 DtValue ALang::Dt::Size( const DtValue & Val ) 
