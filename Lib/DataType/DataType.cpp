@@ -12,7 +12,7 @@ DtValue & DataType::Assign( DtValue & Lhs, const DtValue & Rhs )
     return Lhs;
 }
 
-DtValue & DataType::Assign( DtValue & Lhs, const DtValue * Rhs )
+DtValue & DataType::Assign( DtValue & Lhs, DtValue * Rhs )
 {
     if( Rhs->Type != & DtString && Rhs->Type != & DtArray )
         throw OperationError( "Addsrss asignment, Operation permited only for Rhs of type DtString and Dtarray." );
@@ -180,7 +180,7 @@ DtValue & DtValue::operator = ( const DtValue & Rhs )
     return this->Type->Assign( *this, Rhs );
 }
 
-DtValue & DtValue::operator = ( const DtValue * Rhs )
+DtValue & DtValue::operator = ( DtValue * Rhs )
 {
     return this->Type->Assign( *this, Rhs );
 }

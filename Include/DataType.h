@@ -18,7 +18,7 @@ struct DataType
     ~DataType() {}
 
     virtual DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
-    virtual DtValue & Assign( DtValue & Lhs, const DtValue * Rhs );
+    virtual DtValue & Assign( DtValue & Lhs,       DtValue * Rhs );
 
     virtual DtValue   Add( const DtValue & Lhs, const DtValue & Rhs );
     virtual DtValue & AddAssign( DtValue & Lhs, const DtValue & Rhs );
@@ -125,7 +125,7 @@ struct DtValue
     DtValue & operator =  ( double Rhs );
     DtValue & operator =  ( const char* Rhs );
     DtValue & operator =  ( const DtValue & Rhs );
-    DtValue & operator =  ( const DtValue * Rhs );
+    DtValue & operator =  (       DtValue * Rhs );
     DtValue & operator =  ( const std::string & Rhs );
     DtValue & operator =  ( const std::vector< DtValue > & Rhs );
     DtValue & operator =  ( const std::unordered_map< std::string, DtValue > & Rhs ); 
@@ -155,6 +155,9 @@ struct DtValue
 };
 
 DtValue Size( const DtValue & Val );
+
+typedef std::unordered_map< std::string, DtValue > DtValueMap;
+typedef std::vector< DtValue > DtValueVec;
 
 }} // Namespace Dt, ALang
 
