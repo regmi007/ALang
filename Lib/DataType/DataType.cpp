@@ -14,8 +14,8 @@ DtValue & DataType::Assign( DtValue & Lhs, const DtValue & Rhs )
 
 DtValue & DataType::Assign( DtValue & Lhs, DtValue * Rhs )
 {
-    if( Rhs->Type != & DtString && Rhs->Type != & DtArray )
-        throw OperationError( "Addsrss asignment, Operation permited only for Rhs of type DtString and Dtarray." );
+    if( Rhs->Type != & DtString && Rhs->Type != & DtArray && Rhs->Type != & DtStruct )
+        throw OperationError( "Addsrss asignment, Operation permited only for Rhs of type DtString, DtStruct and Dtarray." );
 
     Lhs.Data = & Rhs->Data;
     Lhs.Type = Rhs->Type;
@@ -135,11 +135,11 @@ DtValue::DtValue( const std::string & Str ) : Data( Str ), Type( & DtString )
 {
 }
 
-DtValue::DtValue( const std::vector< DtValue > & Arr ) : Data( Arr ), Type( & DtArray )
+DtValue::DtValue( const DtValueVec & Vec ) : Data( Vec ), Type( & DtArray )
 {
 }
 
-DtValue::DtValue( const std::unordered_map< std::string, DtValue > & Map ) : Data( Map ), Type( & DtStruct )
+DtValue::DtValue( const DtValueMap & Map ) : Data( Map ), Type( & DtStruct )
 {
 }
 
@@ -168,10 +168,17 @@ DtValue & DtValue::operator = ( const std::string & Str )
     return *this;
 }
 
-DtValue & DtValue::operator = ( const std::vector<DtValue> & Arr )
+DtValue & DtValue::operator = ( const DtValueVec & Vec )
 {
-    this->Data = Arr;
+    this->Data = Vec;
     this->Type = & DtArray;
+    return *this;
+}
+
+DtValue & DtValue::operator = ( const DtValueMap & Map )
+{
+    this->Data = Map;
+    this->Type = & DtStruct;
     return *this;
 }
 

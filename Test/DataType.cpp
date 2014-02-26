@@ -21,13 +21,15 @@ int main()
     a2[1] = s2;
     a2[2] = & a1;
  
-    std::cout << a1 << "Size: " << Size( a1 ) << "\n";
-    std::cout << a2 << "Sizei: " << Size( a2 ) << "\n";
+//    std::cout << a1 << "Size: " << Size( a1 ) << "\n";
+//    std::cout << a2 << "Sizei: " << Size( a2 ) << "\n";
 
-    DtValue st1 = DtValueMap();
+   DtValue st1 = DtValueMap();
 
     st1[ "Hi" ] = a1;
-    st1[ "Hello" ] = & a2;
+//    st1[ "Hello" ] = & a2;
 
-    std::cout << st1 << "\n";
+    std::cout << st1[ "1" ] << "\n";
+//      std::cout << a1[ 0 ] << "\n";
+//    std::cout << s1 << "\n";
 }

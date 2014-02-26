@@ -97,7 +97,7 @@ struct DataTypeStruct : public DataType
 {
     DtValue Size( const DtValue & Lhs );
 
-    //DtValue & SubScriptGetKey( const DtValue & Lhs, const std::string & Key );
+    DtValue & SubScriptGetKey( const DtValue & Lhs, const std::string & Key );
 
     DtValue & SubScriptSetKey(       DtValue & Lhs, const std::string & Key );
 
