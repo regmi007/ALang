@@ -12,8 +12,11 @@ DtValue & DataType::Assign( DtValue & Lhs, const DtValue & Rhs )
     return Lhs;
 }
 
-DtValue & DataType::Assign( DtValue & Lhs, DtValue * Rhs )
+DtValue & DataType::Assign( DtValue & Lhs, const DtValue * Rhs )
 {
+    if( Rhs->Type != & DtString && Rhs->Type != & DtArray )
+        throw OperationError( "Addsrss asignment, Operation permited only for Rhs of type DtString and Dtarray." );
+
     Lhs.Data = & Rhs->Data;
     Lhs.Type = Rhs->Type;
     return Lhs;
@@ -84,11 +87,6 @@ bool DataType::EqualTo( const DtValue & Lhs, const DtValue & Rhs )
     throw OperationError( "==, Operation not implemented." );
 }
 
-bool DataType::NotEqualTo( const DtValue & Lhs, const DtValue & Rhs )
-{
-    throw OperationError( "!=, Operation not implemented." );
-}
-
 DtValue DataType::Size( const DtValue & Lhs )
 {
     throw OperationError( "Size(), Operation not implemented." );
@@ -137,7 +135,11 @@ DtValue::DtValue( const std::string & Str ) : Data( Str ), Type( & DtString )
 {
 }
 
-DtValue::DtValue( const std::vector<DtValue> & Arr ) : Data( Arr ), Type( & DtArray )
+DtValue::DtValue( const std::vector< DtValue > & Arr ) : Data( Arr ), Type( & DtArray )
+{
+}
+
+DtValue::DtValue( const std::unordered_map< std::string, DtValue > & Map ) : Data( Map ), Type( & DtStruct )
 {
 }
 
@@ -178,27 +180,27 @@ DtValue & DtValue::operator = ( const DtValue & Rhs )
     return this->Type->Assign( *this, Rhs );
 }
 
-DtValue & DtValue::operator = ( DtValue * Rhs )
+DtValue & DtValue::operator = ( const DtValue * Rhs )
 {
     return this->Type->Assign( *this, Rhs );
 }
 
-DtValue DtValue::operator + ( const DtValue & Rhs )
+DtValue DtValue::operator + ( const DtValue & Rhs ) const
 {
     return this->Type->Add( *this, Rhs );
 }
 
-DtValue DtValue::operator - ( const DtValue & Rhs )
+DtValue DtValue::operator - ( const DtValue & Rhs ) const
 {
     return this->Type->Substract( *this, Rhs );
 }
 
-DtValue DtValue::operator * ( const DtValue & Rhs )
+DtValue DtValue::operator * ( const DtValue & Rhs ) const
 {
     return this->Type->Multiply( *this, Rhs );
 }
 
-DtValue DtValue::operator / ( const DtValue & Rhs )
+DtValue DtValue::operator / ( const DtValue & Rhs ) const
 {
     return this->Type->Divide( *this, Rhs );
 }
@@ -223,34 +225,34 @@ DtValue & DtValue::operator /= ( const DtValue & Rhs )
     return this->Type->DivideAssign( *this, Rhs );
 }
 
-bool DtValue::operator < ( const DtValue & Rhs )
+bool DtValue::operator < ( const DtValue & Rhs ) const
 {
     return this->Type->LessThan( *this, Rhs );
 }
 
-bool DtValue::operator > ( const DtValue & Rhs )
+bool DtValue::operator > ( const DtValue & Rhs ) const
 {
     return this->Type->GreaterThan( *this, Rhs );
 }
 
-bool DtValue::operator <= ( const DtValue & Rhs )
+bool DtValue::operator <= ( const DtValue & Rhs ) const
 {
     return this->Type->LessThanEqualTo( *this, Rhs );
 }
 
-bool DtValue::operator >= ( const DtValue & Rhs )
+bool DtValue::operator >= ( const DtValue & Rhs ) const
 {
     return this->Type->GreaterThanEqualTo( *this, Rhs );
 }
 
-bool DtValue::operator == ( const DtValue & Rhs )
+bool DtValue::operator == ( const DtValue & Rhs ) const
 {
     return this->Type->EqualTo( *this, Rhs );
 }
 
-bool DtValue::operator != ( const DtValue & Rhs )
+bool DtValue::operator != ( const DtValue & Rhs ) const
 {
-    return this->Type->NotEqualTo( *this, Rhs );
+    return ! this->Type->EqualTo( *this, Rhs );
 }
 
 DtValue & DtValue::operator [] ( std::size_t Index ) const

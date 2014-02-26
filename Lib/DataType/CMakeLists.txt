@@ -3,6 +3,7 @@ SET( LIB_DATATYPE_SRC
     DataTypeDouble.cpp
     DataTypeString.cpp
     DataTypeArray.cpp
+    DataTypeStruct.cpp
 )
 
 ADD_LIBRARY( ALangDataType
