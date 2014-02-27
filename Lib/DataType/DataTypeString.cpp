@@ -101,4 +101,139 @@ DtValue DataTypeString::Size( const DtValue & Lhs )
     return Val;
 }
 
+bool DataTypeString::LessThan( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const std::string *PStrLhs = nullptr;
+
+    if( Lhs.Data.type() == typeid( std::string ) )
+        PStrLhs = boost::any_cast< const std::string >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PStrLhs = boost::any_cast< const std::string >( PData );        
+    }
+
+    const std::string *PStrRhs = nullptr;
+
+    if( Rhs.Data.type() == typeid( std::string ) )
+        PStrRhs = boost::any_cast< const std::string >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PStrRhs = boost::any_cast< const std::string >( PData );        
+    }
+ 
+    return ( *PStrLhs ) < ( *PStrRhs );
+}
+
+bool DataTypeString::LessThanEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const std::string *PStrLhs = nullptr;
+
+    if( Lhs.Data.type() == typeid( std::string ) )
+        PStrLhs = boost::any_cast< const std::string >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PStrLhs = boost::any_cast< const std::string >( PData );        
+    }
+
+    const std::string *PStrRhs = nullptr;
+
+    if( Rhs.Data.type() == typeid( std::string ) )
+        PStrRhs = boost::any_cast< const std::string >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PStrRhs = boost::any_cast< const std::string >( PData );        
+    }
+ 
+    return ( *PStrLhs ) <= ( *PStrRhs );
+}
+
+bool DataTypeString::GreaterThan( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const std::string *PStrLhs = nullptr;
+
+    if( Lhs.Data.type() == typeid( std::string ) )
+        PStrLhs = boost::any_cast< const std::string >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PStrLhs = boost::any_cast< const std::string >( PData );        
+    }
+
+    const std::string *PStrRhs = nullptr;
+
+    if( Rhs.Data.type() == typeid( std::string ) )
+        PStrRhs = boost::any_cast< const std::string >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PStrRhs = boost::any_cast< const std::string >( PData );        
+    }
+ 
+    return ( *PStrLhs ) > ( *PStrRhs );
+}
+
+bool DataTypeString::GreaterThanEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const std::string *PStrLhs = nullptr;
+
+    if( Lhs.Data.type() == typeid( std::string ) )
+        PStrLhs = boost::any_cast< const std::string >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PStrLhs = boost::any_cast< const std::string >( PData );        
+    }
+
+    const std::string *PStrRhs = nullptr;
+
+    if( Rhs.Data.type() == typeid( std::string ) )
+        PStrRhs = boost::any_cast< const std::string >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PStrRhs = boost::any_cast< const std::string >( PData );        
+    }
+ 
+    return ( *PStrLhs ) >= ( *PStrRhs );
+}
+
+bool DataTypeString::EqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const std::string *PStrLhs = nullptr;
+
+    if( Lhs.Data.type() == typeid( std::string ) )
+        PStrLhs = boost::any_cast< const std::string >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PStrLhs = boost::any_cast< const std::string >( PData );        
+    }
+
+    const std::string *PStrRhs = nullptr;
+
+    if( Rhs.Data.type() == typeid( std::string ) )
+        PStrRhs = boost::any_cast< const std::string >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PStrRhs = boost::any_cast< const std::string >( PData );        
+    }
+
+    return ( *PStrLhs ) == ( *PStrRhs );
+}
+
 DataTypeString DtString;

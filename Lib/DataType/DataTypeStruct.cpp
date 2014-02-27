@@ -84,4 +84,31 @@ DtValue & DataTypeStruct::SubScriptSetKey( DtValue & Lhs, const std::string & Ke
     return ( *PMapLhs )[ Key ];
 }
 
+bool DataTypeStruct::EqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const DtValueMap *PMapLhs = nullptr;
+
+    if( Lhs.Data.type() == typeid( DtValueMap ))
+        PMapLhs = boost::any_cast< const DtValueMap >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PMapLhs = boost::any_cast< const DtValueMap >( PData );        
+    }
+
+    const DtValueMap *PMapRhs = nullptr;
+
+    if( Rhs.Data.type() == typeid( DtValueMap ))
+        PMapRhs = boost::any_cast< const DtValueMap >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PMapRhs = boost::any_cast< const DtValueMap >( PData );        
+    }
+
+    return ( *PMapLhs ) == ( *PMapRhs );
+}
+
 DataTypeStruct DtStruct;

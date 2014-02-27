@@ -65,6 +65,14 @@ struct DataTypeDouble : public DataType
     DtValue   Divide( const DtValue & Lhs, const DtValue & Rhs );
     DtValue & DivideAssign( DtValue & Lhs, const DtValue & Rhs );
 
+    bool LessThan( const DtValue & Lhs, const DtValue & Rhs );
+    bool GreaterThan( const DtValue & Lhs, const DtValue & Rhs );
+
+    bool LessThanEqualTo( const DtValue & Lhs, const DtValue & Rhs );
+    bool GreaterThanEqualTo( const DtValue & Lhs, const DtValue & Rhs );
+
+    bool EqualTo( const DtValue & Lhs, const DtValue & Rhs );
+
     void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
 
@@ -72,6 +80,14 @@ struct DataTypeString : public DataType
 {
     DtValue   Add( const DtValue & Lhs, const DtValue & Rhs );
     DtValue & AddAssign( DtValue & Lhs, const DtValue & Rhs );
+
+    bool LessThan( const DtValue & Lhs, const DtValue & Rhs );
+    bool GreaterThan( const DtValue & Lhs, const DtValue & Rhs );
+
+    bool LessThanEqualTo( const DtValue & Lhs, const DtValue & Rhs );
+    bool GreaterThanEqualTo( const DtValue & Lhs, const DtValue & Rhs );
+
+    bool EqualTo( const DtValue & Lhs, const DtValue & Rhs );
 
     DtValue Size( const DtValue & Lhs );
 
@@ -90,6 +106,14 @@ struct DataTypeArray : public DataType
 
     DtValue & SubScriptSetIndex( DtValue & Lhs, std::size_t Index );
 
+    bool LessThan( const DtValue & Lhs, const DtValue & Rhs );
+    bool GreaterThan( const DtValue & Lhs, const DtValue & Rhs );
+
+    bool LessThanEqualTo( const DtValue & Lhs, const DtValue & Rhs );
+    bool GreaterThanEqualTo( const DtValue & Lhs, const DtValue & Rhs );
+
+    bool EqualTo( const DtValue & Lhs, const DtValue & Rhs );
+
     void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
 
@@ -100,6 +124,8 @@ struct DataTypeStruct : public DataType
     DtValue & SubScriptGetKey( const DtValue & Lhs, const std::string & Key );
 
     DtValue & SubScriptSetKey( DtValue & Lhs, const std::string & Key );
+
+    bool EqualTo( const DtValue & Lhs, const DtValue & Rhs );
 
     void ToStream( std::ostream & Out, const DtValue & Rhs );
 };

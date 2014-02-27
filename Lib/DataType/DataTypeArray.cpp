@@ -166,4 +166,139 @@ DtValue & DataTypeArray::SubScriptSetIndex( DtValue & Lhs, std::size_t Index )
     return ( *PVecLhs )[ Index ];
 }
 
+bool DataTypeArray::LessThan( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const DtValueVec *PVecRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( DtValueVec ) )
+        PVecRhs = boost::any_cast< const DtValueVec >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PVecRhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    const DtValueVec *PVecLhs = nullptr;
+    
+    if( Lhs.Data.type() == typeid( DtValueVec ) )
+        PVecLhs = boost::any_cast< const DtValueVec >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    return ( *PVecLhs ) < ( *PVecRhs );
+}
+
+bool DataTypeArray::LessThanEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const DtValueVec *PVecRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( DtValueVec ) )
+        PVecRhs = boost::any_cast< const DtValueVec >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PVecRhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    const DtValueVec *PVecLhs = nullptr;
+    
+    if( Lhs.Data.type() == typeid( DtValueVec ) )
+        PVecLhs = boost::any_cast< const DtValueVec >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    return ( *PVecLhs ) <= ( *PVecRhs );
+}
+
+bool DataTypeArray::GreaterThan( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const DtValueVec *PVecRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( DtValueVec ) )
+        PVecRhs = boost::any_cast< const DtValueVec >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PVecRhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    const DtValueVec *PVecLhs = nullptr;
+    
+    if( Lhs.Data.type() == typeid( DtValueVec ) )
+        PVecLhs = boost::any_cast< const DtValueVec >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    return ( *PVecLhs ) > ( *PVecRhs );
+}
+
+bool DataTypeArray::GreaterThanEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const DtValueVec *PVecRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( DtValueVec ) )
+        PVecRhs = boost::any_cast< const DtValueVec >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PVecRhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    const DtValueVec *PVecLhs = nullptr;
+    
+    if( Lhs.Data.type() == typeid( DtValueVec ) )
+        PVecLhs = boost::any_cast< const DtValueVec >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    return ( *PVecLhs ) >= ( *PVecRhs );
+}
+
+bool DataTypeArray::EqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    const DtValueVec *PVecRhs = nullptr;
+    
+    if( Rhs.Data.type() == typeid( DtValueVec ) )
+        PVecRhs = boost::any_cast< const DtValueVec >( & Rhs.Data );
+
+    else if( Rhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Rhs.Data );
+        PVecRhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    const DtValueVec *PVecLhs = nullptr;
+    
+    if( Lhs.Data.type() == typeid( DtValueVec ) )
+        PVecLhs = boost::any_cast< const DtValueVec >( & Lhs.Data );
+
+    else if( Lhs.Data.type() == typeid( boost::any* ) )
+    {
+        boost::any *PData = boost::any_cast< boost::any* >( Lhs.Data );
+        PVecLhs = boost::any_cast< const DtValueVec >( PData );        
+    }
+
+    return ( *PVecLhs ) == ( *PVecRhs );
+}
+
 DataTypeArray DtArray;

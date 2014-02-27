@@ -124,4 +124,59 @@ void DataTypeDouble::ToStream( std::ostream & Out, const DtValue & Rhs )
         Out << *PRhs;
 }
 
+bool DataTypeDouble::LessThan( const DtValue & Lhs, const DtValue & Rhs )
+{
+    if( Rhs.Data.type() != typeid( double ) )
+        throw OperationError( "<, Cannot compare type other than DataTypeDouble." );
+
+    const double *PLhs = boost::any_cast< const double >( & Lhs.Data );
+    const double *PRhs = boost::any_cast< const double >( & Rhs.Data );
+
+    return ( *PLhs ) < ( *PRhs );
+}
+
+bool DataTypeDouble::LessThanEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    if( Rhs.Data.type() != typeid( double ) )
+        throw OperationError( "<=, Cannot compare type other than DataTypeDouble." );
+
+    const double *PLhs = boost::any_cast< const double >( & Lhs.Data );
+    const double *PRhs = boost::any_cast< const double >( & Rhs.Data );
+
+    return ( *PLhs ) <= ( *PRhs );
+}
+
+bool DataTypeDouble::GreaterThan( const DtValue & Lhs, const DtValue & Rhs )
+{
+    if( Rhs.Data.type() != typeid( double ) )
+        throw OperationError( ">, Cannot compare type other than DataTypeDouble." );
+
+    const double *PLhs = boost::any_cast< const double >( & Lhs.Data );
+    const double *PRhs = boost::any_cast< const double >( & Rhs.Data );
+
+    return ( *PLhs ) > ( *PRhs );
+}
+
+bool DataTypeDouble::GreaterThanEqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    if( Rhs.Data.type() != typeid( double ) )
+        throw OperationError( ">=, Cannot compare type other than DataTypeDouble." );
+
+    const double *PLhs = boost::any_cast< const double >( & Lhs.Data );
+    const double *PRhs = boost::any_cast< const double >( & Rhs.Data );
+
+    return ( *PLhs ) >= ( *PRhs );
+}
+
+bool DataTypeDouble::EqualTo( const DtValue & Lhs, const DtValue & Rhs )
+{
+    if( Rhs.Data.type() != typeid( double ) )
+        throw OperationError( "==, Cannot compare type other than DataTypeDouble." );
+
+    const double *PLhs = boost::any_cast< const double >( & Lhs.Data );
+    const double *PRhs = boost::any_cast< const double >( & Rhs.Data );
+
+    return ( *PLhs ) == ( *PRhs );
+}
+
 DataTypeDouble DtDouble;
