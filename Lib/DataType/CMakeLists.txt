@@ -6,6 +6,4 @@ SET( LIB_DATATYPE_SRC
     DataTypeStruct.cpp
 )
 
-ADD_LIBRARY( ALangDataType
-    ${LIB_DATATYPE_SRC}
-)
+ADD_LIBRARY( ALangDataType SHARED ${LIB_DATATYPE_SRC} )

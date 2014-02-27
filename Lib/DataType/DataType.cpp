@@ -114,7 +114,7 @@ DtValue & DataType::SubScriptSetKey( DtValue & Lhs, const std::string & Key )
 
 void DataType::ToStream( std::ostream & Out, const DtValue & Lhs )
 {
-    throw OperationError( "ostream << DtValue, Operation not implemented." );
+    Out << "NULL";
 }
 
 DataType DtNull;

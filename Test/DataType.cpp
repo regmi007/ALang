@@ -11,6 +11,7 @@ int main()
 {
     DtValue d1 = 2.3, d2 = 3.5;
     DtValue s1 = "Hello ", s2 = "World";
+
     DtValue a1 = DtValueVec();
     DtValue a2 =  DtValueVec();
 
@@ -21,15 +22,14 @@ int main()
     a2[1] = s2;
     a2[2] = & a1;
  
-//    std::cout << a1 << "Size: " << Size( a1 ) << "\n";
-//    std::cout << a2 << "Sizei: " << Size( a2 ) << "\n";
-
-   DtValue st1 = DtValueMap();
+    DtValue st1 = DtValueMap();
 
     st1[ "Hi" ] = a1;
     st1[ "Hello" ] = & a2;
+    st1[ "A" ] = 2.45;
+    st1[ "B" ] = "My name is shyam";
 
+    st1[ "Hello" ][ 10 ] = "This is awesome !";
+ 
     std::cout << st1 << "\n";
-    std::cout << st1[ "Hi" ] << "\n";
-    std::cout << st1[ "Hello" ] << "\n";
 }
