@@ -27,9 +27,9 @@ int main()
    DtValue st1 = DtValueMap();
 
     st1[ "Hi" ] = a1;
-//    st1[ "Hello" ] = & a2;
+    st1[ "Hello" ] = & a2;
 
-    std::cout << st1[ "1" ] << "\n";
-//      std::cout << a1[ 0 ] << "\n";
-//    std::cout << s1 << "\n";
+    std::cout << st1 << "\n";
+    std::cout << st1[ "Hi" ] << "\n";
+    std::cout << st1[ "Hello" ] << "\n";
 }

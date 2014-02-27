@@ -81,8 +81,6 @@ DtValue & DataTypeStruct::SubScriptSetKey( DtValue & Lhs, const std::string & Ke
         PMapLhs = boost::any_cast< DtValueMap >( PData );        
     }
 
-    DtValue Val;
-    ( *PMapLhs )[ Key ] = Val;
     return ( *PMapLhs )[ Key ];
 }
 

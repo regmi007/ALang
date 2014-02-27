@@ -136,7 +136,7 @@ DtValue & DataTypeArray::SubScriptGetIndex( const DtValue & Lhs, std::size_t Ind
         PVecLhs = boost::any_cast< const DtValueVec >( PData );        
     }
     
-    return const_cast< DtValueVec* >( PVecLhs )->at( Index );
+    return const_cast< DtValueVec* > ( PVecLhs )->at( Index );
 }
 
 DtValue & DataTypeArray::SubScriptSetIndex( DtValue & Lhs, std::size_t Index )

@@ -88,7 +88,7 @@ struct DataTypeArray : public DataType
     // Throws std::out_of_range if Index >= Array.Size()
     DtValue & SubScriptGetIndex( const DtValue & Lhs, std::size_t Index );
 
-    DtValue & SubScriptSetIndex(       DtValue & Lhs, std::size_t Index );
+    DtValue & SubScriptSetIndex( DtValue & Lhs, std::size_t Index );
 
     void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
@@ -99,7 +99,7 @@ struct DataTypeStruct : public DataType
 
     DtValue & SubScriptGetKey( const DtValue & Lhs, const std::string & Key );
 
-    DtValue & SubScriptSetKey(       DtValue & Lhs, const std::string & Key );
+    DtValue & SubScriptSetKey( DtValue & Lhs, const std::string & Key );
 
     void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
