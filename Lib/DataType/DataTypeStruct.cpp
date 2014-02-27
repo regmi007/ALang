@@ -22,10 +22,11 @@ void DataTypeStruct::ToStream( std::ostream & Out, const DtValue & Rhs )
     }
 
     std::size_t i = 0;
+
     Out << "{ ";
-    for( auto Kv : *PMapRhs )
-     {
-        Out << "'" << Kv.first << "' : " << Kv.second;
+    for( auto & Pair : *PMapRhs )
+    {
+        Out << "'" << Pair.first << "': " << Pair.second;
 
         if( i < PMapRhs->size() - 1)
             Out << ", ";

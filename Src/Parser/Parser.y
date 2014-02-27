@@ -60,6 +60,7 @@ Statement : Expression TEOL     {   }
     | ConditionalStatement      {   }
     | TWHILE Expression Block   {   }
     | TFUNC TIDENTIFIER TLPAREN ExpressionList TRPAREN Block    { std::cout << "Function defination found\n"; }
+    | TRETURN Expression TEOL   {   }
     ;
 
 ConditionalStatement : IfStatement  {   }
@@ -74,7 +75,7 @@ Block : TINDENT Statements TDEDENT  {   }
 	  ;
 
 Expression : TIDENTIFIER TEQUAL Expression          { std::cout << "Assignment found\n"; }
-    | TIDENTIFIER TLPAREN ExpressionList TRPAREN    { std::cout << "Function call found.\n"; }
+    | TIDENTIFIER TLPAREN ExpressionList TRPAREN    { std::cout << "Function call with arg found.\n"; }
     | TIDENTIFIER                           {   }  
     | TINTEGER                              {   }
     | TDOUBLE                               {   }
@@ -86,12 +87,11 @@ Expression : TIDENTIFIER TEQUAL Expression          { std::cout << "Assignment f
     | Expression TPOW   Expression          {   }
     | Expression Comparison Expression      { std::cout << "Comparision found\n"; }
     | TLPAREN Expression TRPAREN            {   }
-    | TRETURN Expression                    {   }
 	;
 
 ExpressionList: /* Blank */
-    |   Expression                          {   }
-    |   ExpressionList TCOMMA Expression    {   }
+    | Expression                            {   }
+    | ExpressionList TCOMMA Expression    {   }
     ;
 
 Comparison : TCEQ | TCNE | TCLT | TCLE | TCGT | TCGE;

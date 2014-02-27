@@ -114,7 +114,6 @@ DtValue & DataType::SubScriptSetKey( DtValue & Lhs, const std::string & Key )
 
 void DataType::ToStream( std::ostream & Out, const DtValue & Lhs )
 {
-    Out << "NULL";
 }
 
 DataType DtNull;
