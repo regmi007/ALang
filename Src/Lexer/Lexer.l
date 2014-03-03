@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "Parser/Ast.hpp"
 #include "Parser/Parser.h"
 
 #ifndef ALANG_DEBUG_LEXER

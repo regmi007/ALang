@@ -15,4 +15,4 @@ public:
     }
 };
 
-}} // Namespace ALang, Error
+}} // Namespace Error, ALang
