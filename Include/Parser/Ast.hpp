@@ -2,10 +2,12 @@
 #define __AST_H__
 
 #include <memory>
+#include <functional>
 
 #include "DataType.hpp"
 
 using ALang::Dt::DtValue;
+using ALang::Dt::DtValueMap;
 
 namespace ALang { namespace Ast {
 
@@ -17,13 +19,15 @@ typedef std::vector< NStatement* >  StatementList;
 typedef std::vector< NExpression* > ExpressionList;
 typedef std::vector< NIdentifier* > ParameterList;
 
+typedef std::function< DtValue( DtValueMap & Context ) > BuiltInFunction;
+
 struct Node
 {
     ~Node()
     {
     }
 
-    virtual DtValue Evaluate()
+    virtual DtValue Evaluate( DtValueMap & Context )
     {
         return DtValue();
     }
@@ -47,44 +51,44 @@ struct NInteger : public NExpression
 {
     int Val;
 
-    NInteger( const std::string *Str ) : NExpression(), Val( std::stoi( *Str ) )
+    NInteger( const std::string & Str ) : NExpression(), Val( std::stoi( Str ) )
     {
     }
 
-    //DtValue Evaluate();
+    DtValue Evaluate( DtValueMap & Context );
 };
 
 struct NDouble : public NExpression
 {
     double Val;
 
-    NDouble( const std::string *Str ) : NExpression(), Val( std::stod( *Str ) )
+    NDouble( const std::string & Str ) : NExpression(), Val( std::stod( Str ) )
     {
     }
 
-    //DtValue Evaluate();
+    DtValue Evaluate( DtValueMap & Context );
 };
 
 struct NString : public NExpression
 {
     const std::string & Val;
 
-    NString( const std::string *Str ) : NExpression(), Val( *Str )
+    NString( const std::string & Str ) : NExpression(), Val( Str )
     {
     }
 
-    //DtValue Evaluate();
+    DtValue Evaluate( DtValueMap & Context );
 };
 
 struct NIdentifier : public NExpression
 {
-    std::string Val;
+    const std::string & Val;
 
     NIdentifier( const std::string & Str ) : NExpression(), Val( Str )
     {
     }
 
-    //DtValue Evaluate();
+    DtValue Evaluate( DtValueMap & Context );
 };
 
 struct NFunctionCall : public NExpression
@@ -107,7 +111,7 @@ struct NFunctionCall : public NExpression
     {
     }
 
-    //DtValue Evaluate();
+    DtValue Evaluate( DtValueMap & Context );
 };
 
 struct NBinaryOperator : NExpression
@@ -141,7 +145,19 @@ struct NAssignment : NExpression
     {
     }
     
-    //DtValue Evaluate();
+    DtValue Evaluate( DtValueMap & Context );
+};
+
+struct NExpressionStatement : public NStatement
+{
+	NExpression & Expression;
+
+	NExpressionStatement( NExpression & Expr ) : 
+		Expression( Expr )
+	{
+	}
+
+    DtValue Evaluate( DtValueMap & Context );
 };
 
 struct NReturnStatement : public NStatement
@@ -165,25 +181,47 @@ struct NBlock : public NStatement
     {
     }
 
-    //DtValue Evaluate();
+    DtValue Evaluate( DtValueMap & Context );
 };
 
 struct NFunctionDefinition : public NStatement
 {
 	const NIdentifier & Identifier;
-	
-	ParameterList Arguments;
-	
-	NBlock & Block;
-
-	NFunctionDefinition( const NIdentifier & I, const ParameterList & Args, NBlock & Block ):
+	ParameterList 		Arguments;
+    int ArgsType;
+    
+	NFunctionDefinition(  const NIdentifier & I,  const ParameterList & Args, int T ):
 		Identifier( I ),
         Arguments( Args ),
+        ArgsType( T )
+	{
+	}
+};
+
+struct NUserFunctionDefinition : public NFunctionDefinition
+{
+	NBlock & Block;
+
+	NUserFunctionDefinition( const NIdentifier & I, const ParameterList & Args, NBlock & Block, int T ):
+		NFunctionDefinition( I, Args, T ),
         Block( Block )
     {
     }
 
-    //DtValue Evaluate();
+    DtValue Evaluate( DtValueMap & Context );
+};
+
+struct NBuiltInFunctionDefinition : public NFunctionDefinition
+{
+    BuiltInFunction Function;
+
+	NBuiltInFunctionDefinition( const NIdentifier & I, const ParameterList & Args, BuiltInFunction F, int T ):
+		NFunctionDefinition( I, Args, T ),
+        Function( F )
+    {
+    }
+
+    DtValue Evaluate( DtValueMap & Context );
 };
 
 }} // Namespace Ast, ALang

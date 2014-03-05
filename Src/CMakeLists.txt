@@ -21,8 +21,11 @@ ADD_CUSTOM_COMMAND(
 
 SET( ALANG_SRC
     Main.cpp
+    
     ${FLEX_OUTPUT}
     ${BISON_OUTPUT}
+    
+    Parser/Ast.cpp
 )
 
 ADD_SUBDIRECTORY( Lexer )

@@ -130,6 +130,10 @@ struct DataTypeStruct : public DataType
     void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
 
+struct DataTypeALangNode : public DataType
+{
+};
+
 struct DtValue
 {
     boost::any
@@ -184,15 +188,19 @@ DtValue Size( const DtValue & Val );
 
 typedef std::unordered_map< std::string, DtValue > DtValueMap;
 typedef std::vector< DtValue > DtValueVec;
+typedef std::vector< std::string > StringVec;
 
 }} // Namespace Dt, ALang
 
 std::ostream & operator << ( std::ostream & Out, const ALang::Dt::DtValue & Val );
 
 extern ALang::Dt::DataType       DtNull;
+
 extern ALang::Dt::DataTypeArray  DtArray;
 extern ALang::Dt::DataTypeDouble DtDouble;
 extern ALang::Dt::DataTypeString DtString;
 extern ALang::Dt::DataTypeStruct DtStruct;
+
+extern ALang::Dt::DataTypeALangNode DtALangNode;
 
 #endif

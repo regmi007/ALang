@@ -39,7 +39,7 @@ void yyerror( const char *S )
 %token <String> TIDENTIFIER TINTEGER TDOUBLE TSTRING
 %token <Token>  TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <Token>  TLPAREN TRPAREN TLBRACE TRBRACE TLBRACKET TRBRACKET
-%token <Token>  TNOP TCOMMA TDOT TINDENT TDEDENT TCOLON
+%token <Token>  TNOP TCOMMA TDOT TELLIPSIS TINDENT TDEDENT TCOLON
 %token <Token>  TPLUS TMINUS TMUL TDIV TPOW
 %token <Token>  TEOL TRETURN TIF TELSE TELIF TWHILE TFUNC
 
@@ -73,11 +73,12 @@ Statements : Statement  { $$ = new ALang::Ast::NBlock(); $$->Statements.push_bac
     | Statements Statement  { $1->Statements.push_back( $<Stmt>2 ); }
     ;
 
-Statement : Expression TEOL     {   }
+Statement : Expression TEOL     { $$ = new ALang::Ast::NExpressionStatement( *$1 ); }
     | TRETURN Expression TEOL   { $$ = new ALang::Ast::NReturnStatement( *$2 ); }
     | ConditionalStatement      {   }
     | TWHILE Expression Block   {   }
-    | TFUNC TIDENTIFIER TLPAREN ParameterList TRPAREN Block    {   }
+    | TFUNC Identifier TLPAREN Identifier TELLIPSIS TRPAREN Block { $$ = new ALang::Ast::NUserFunctionDefination( *$2, *$4, *$7, 0 ); }
+    | TFUNC Identifier TLPAREN ParameterList TRPAREN Block { $$ = new ALang::Ast::NUserFunctionDefination( *$2, *$4, *$6, 1 ); delete $4; }
     ;
 
 ConditionalStatement : IfStatement  {   }
@@ -91,18 +92,19 @@ IfStatement : TIF Expression Block       {   }
 Block : TINDENT Statements TDEDENT  { $$ = $2; }
 	  ;
 
-Identifier : TIDENTIFIER { $$ = new ALang::Ast::NIdentifier( *$1 ); delete $1; }
+Identifier : TIDENTIFIER { $$ = new ALang::Ast::NIdentifier( *$1 ); }
 	  ;
 
-Number : TINTEGER { $$ = new ALang::Ast::NInteger( $1 ); delete $1; }
-	| TDOUBLE { $$ = new ALang::Ast::NDouble( $1 ); delete $1; }
+Number : TINTEGER { $$ = new ALang::Ast::NInteger( *$1 ); delete $1; }
+	| TDOUBLE { $$ = new ALang::Ast::NDouble( *$1 ); delete $1; }
 	;
 
-String : TSTRING { $$ = new ALang::Ast::NString( $1 ); }
+String : TSTRING { $$ = new ALang::Ast::NString( *$1 ); }
 	;
 
 Expression : Identifier TEQUAL Expression          { $$ = new ALang::Ast::NAssignment( *$1, *$3 ); }
     | Identifier TLPAREN ExpressionList TRPAREN    { $$ = new ALang::Ast::NFunctionCall( *$1, *$3 ); delete $3; }
+    | Identifier { $<Ident>$ = $1; }
     | Number
     | String
     | Expression TMUL   Expression          { $$ = new ALang::Ast::NBinaryOperator( *$1, $2, *$3 ); }

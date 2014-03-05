@@ -145,6 +145,7 @@ EXP	([Ee][-+]?[0-9]+)
 "^"                     PRINT_TOKEN("TPOW",""); return TOKEN( TPOW );
 
 ":"                     PRINT_TOKEN("TCOLON",""); return TOKEN( TCOLON );
+"..."                   PRINT_TOKEN("TELLIPSES",""); return TOKEN( TELLIPSIS );
 "."                     PRINT_TOKEN("TDOT",""); return TOKEN( TDOT );
 ","                     PRINT_TOKEN("TCOMMA",""); return TOKEN( TCOMMA );
 
