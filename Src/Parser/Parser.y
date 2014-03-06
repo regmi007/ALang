@@ -77,8 +77,8 @@ Statement : Expression TEOL     { $$ = new ALang::Ast::NExpressionStatement( *$1
     | TRETURN Expression TEOL   { $$ = new ALang::Ast::NReturnStatement( *$2 ); }
     | ConditionalStatement      {   }
     | TWHILE Expression Block   {   }
-    | TFUNC Identifier TLPAREN Identifier TELLIPSIS TRPAREN Block { $$ = new ALang::Ast::NUserFunctionDefination( *$2, *$4, *$7, 0 ); }
-    | TFUNC Identifier TLPAREN ParameterList TRPAREN Block { $$ = new ALang::Ast::NUserFunctionDefination( *$2, *$4, *$6, 1 ); delete $4; }
+    | TFUNC Identifier TLPAREN Identifier TELLIPSIS TRPAREN Block { ALang::Ast::ParameterList 	P { $4 }; $$ = new ALang::Ast::NUserFunctionDefinition( *$2, P, *$7, 0 ); }
+    | TFUNC Identifier TLPAREN ParameterList TRPAREN Block { $$ = new ALang::Ast::NUserFunctionDefinition( *$2, *$4, *$6, 1 ); delete $4; }
     ;
 
 ConditionalStatement : IfStatement  {   }
