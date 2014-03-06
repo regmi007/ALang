@@ -14,7 +14,7 @@ Build dependencies.
       sudo aptitude install bison
 
     - boost: Boost C++ library.
-      sudo aptitude install libboost1.54-dev
+      sudo aptitude install libboost-dev
 
     - cmake: Build tool
       sudo aptitude install cmake
