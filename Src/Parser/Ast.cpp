@@ -18,41 +18,41 @@ using ALang::Dt::DtValue;
 using ALang::Dt::DtValueVec;
 using ALang::Dt::DtValueMap;
 
-DtValue NBlock::Evaluate( DtValueMap & Context )
+DtValue NBlock::Evaluate( Context & Ctx )
 {
 	DtValue Ret;
 	
 	for( auto Stmt : this->Statements )
-	    Ret = Stmt->Evaluate( Context );
+	    Ret = Stmt->Evaluate( Ctx );
 	    
 	return Ret;
 }
 
-DtValue NExpressionStatement::Evaluate( DtValueMap & Context )
+DtValue NExpressionStatement::Evaluate( Context & Ctx )
 {
-	return this->Expression.Evaluate( Context );
+	return this->Expression.Evaluate( Ctx );
 }
 
-DtValue NDouble::Evaluate( DtValueMap & Context )
-{
-	return DtValue( this->Val );
-}
-
-DtValue NInteger::Evaluate( DtValueMap & Context )
+DtValue NDouble::Evaluate( Context & Ctx )
 {
 	return DtValue( this->Val );
 }
 
-DtValue NString::Evaluate( DtValueMap & Context )
+DtValue NInteger::Evaluate( Context & Ctx )
 {
 	return DtValue( this->Val );
 }
 
-DtValue NIdentifier::Evaluate( DtValueMap & Context )
+DtValue NString::Evaluate( Context & Ctx )
+{
+	return DtValue( this->Val );
+}
+
+DtValue NIdentifier::Evaluate( Context & Ctx )
 {
 	try
     {
-		return Context.at( this->Val );
+		return Ctx.Local.at( this->Val );
 	}
 	catch( std::out_of_range & E )
 	{
@@ -61,29 +61,36 @@ DtValue NIdentifier::Evaluate( DtValueMap & Context )
 	}
 }
 
-DtValue NAssignment::Evaluate( DtValueMap & Context )
+DtValue NAssignment::Evaluate( Context & Ctx )
 {	
-	Context[ this->Identifier.Val ] =  this->Rhs.Evaluate( Context );
-
-    return DtValue();
+	return Ctx.Local[ this->Identifier.Val ] =  this->Rhs.Evaluate( Ctx );
 }
 
-DtValue NFunctionCall::Evaluate( DtValueMap & Context )
+DtValue NFunctionCall::Evaluate( Context & Ctx )
 {	
 	NFunctionDefinition *PNodeFunc = nullptr;
 	
     try
     {
-		DtValue & Func = Context.at( this->Identifier.Val );
+		DtValue & Func = Ctx.Local.at( this->Identifier.Val );
 		PNodeFunc = boost::any_cast< NFunctionDefinition* >( Func.Data );
 	}
 	catch( std::out_of_range & E )
 	{
-		std::cout << "Undefined function " << this->Identifier.Val << "().\n";
-		throw;
+        try
+        {
+		    DtValue & Func = Ctx.Global.at( this->Identifier.Val );
+		    PNodeFunc = boost::any_cast< NFunctionDefinition* >( Func.Data );
+        }
+        catch( std::out_of_range & E )
+        {
+		    std::cout << "Undefined function " << this->Identifier.Val << "().\n";
+		    throw;
+        }
 	}
 
 	DtValueMap Local;
+    Context NewCtx( Local, Ctx.Global );
 
 	if( PNodeFunc->ArgsType == 0 )
 	{
@@ -93,7 +100,7 @@ DtValue NFunctionCall::Evaluate( DtValueMap & Context )
 		
 		for( std::size_t i = 0; i < this->ExpList.size(); ++i )
 		{
-			Local[ PNodeFunc->Arguments[ 0 ]->Val ][ i ] = this->ExpList[ i ]->Evaluate( Context );
+			Local[ PNodeFunc->Arguments[ 0 ]->Val ][ i ] = this->ExpList[ i ]->Evaluate( Ctx );
 		}	
 	}
 	else
@@ -103,37 +110,37 @@ DtValue NFunctionCall::Evaluate( DtValueMap & Context )
 			
 		for( std::size_t i = 0; i < this->ExpList.size(); ++i )
 		{
-			Local[ PNodeFunc->Arguments[ i ]->Val ] = this->ExpList[ i ]->Evaluate( Context );
+			Local[ PNodeFunc->Arguments[ i ]->Val ] = this->ExpList[ i ]->Evaluate( Ctx );
 		}	
 	}
 	
-	return PNodeFunc->Call( Local );
+	return PNodeFunc->Call( NewCtx );
 }
 
-DtValue NUserFunctionDefinition::Evaluate( DtValueMap & Context )
+DtValue NUserFunctionDefinition::Evaluate( Context & Ctx )
 {
 	DtValue NFunc;
 	NFunc.Data = ( NFunctionDefinition* ) this;
 	NFunc.Type = & DtALangNode;
 
-	return Context[ this->Identifier.Val ] = NFunc;
+	return Ctx.Local[ this->Identifier.Val ] = NFunc;
 }
 
-DtValue NUserFunctionDefinition::Call( DtValueMap & Context )
+DtValue NUserFunctionDefinition::Call( Context & Ctx )
 {
-	return this->Block.Evaluate( Context );
+	return this->Block.Evaluate( Ctx );
 }
 
-DtValue NBuiltInFunctionDefinition::Evaluate( DtValueMap & Context )
+DtValue NBuiltInFunctionDefinition::Evaluate( Context & Ctx )
 {
 	DtValue NFunc;
 	NFunc.Data = ( NFunctionDefinition* ) this;
 	NFunc.Type = & DtALangNode;
 
-	return Context[ this->Identifier.Val ] = NFunc;
+	return Ctx.Local[ this->Identifier.Val ] = NFunc;
 }
 
-DtValue NBuiltInFunctionDefinition::Call( DtValueMap & Context )
+DtValue NBuiltInFunctionDefinition::Call( Context & Ctx )
 {
-	return this->Function( Context );
+	return this->Function( Ctx );
 }

@@ -11,6 +11,16 @@ using ALang::Dt::DtValueMap;
 
 namespace ALang { namespace Ast {
 
+struct Context
+{
+    DtValueMap & Local;
+    DtValueMap & Global;
+
+    Context( DtValueMap & L, DtValueMap & G ) : Local( L ), Global( G )
+    {
+    }
+};
+
 struct NExpression;
 struct NStatement;
 struct NIdentifier;
@@ -19,7 +29,7 @@ typedef std::vector< NStatement* >  StatementList;
 typedef std::vector< NExpression* > ExpressionList;
 typedef std::vector< NIdentifier* > ParameterList;
 
-typedef std::function< DtValue( DtValueMap & Context ) > BuiltInFunction;
+typedef std::function< DtValue( Context & Ctx ) > BuiltInFunction;
 
 struct Node
 {
@@ -27,7 +37,7 @@ struct Node
     {
     }
 
-    virtual DtValue Evaluate( DtValueMap & Context )
+    virtual DtValue Evaluate( Context & Ctx )
     {
         return DtValue();
     }
@@ -55,7 +65,7 @@ struct NInteger : public NExpression
     {
     }
 
-    DtValue Evaluate( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
 };
 
 struct NDouble : public NExpression
@@ -66,7 +76,7 @@ struct NDouble : public NExpression
     {
     }
 
-    DtValue Evaluate( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
 };
 
 struct NString : public NExpression
@@ -77,7 +87,7 @@ struct NString : public NExpression
     {
     }
 
-    DtValue Evaluate( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
 };
 
 struct NIdentifier : public NExpression
@@ -88,7 +98,7 @@ struct NIdentifier : public NExpression
     {
     }
 
-    DtValue Evaluate( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
 };
 
 struct NFunctionCall : public NExpression
@@ -111,7 +121,7 @@ struct NFunctionCall : public NExpression
     {
     }
 
-    DtValue Evaluate( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
 };
 
 struct NBinaryOperator : NExpression
@@ -145,7 +155,7 @@ struct NAssignment : NExpression
     {
     }
     
-    DtValue Evaluate( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
 };
 
 struct NExpressionStatement : public NStatement
@@ -157,7 +167,7 @@ struct NExpressionStatement : public NStatement
 	{
 	}
 
-    DtValue Evaluate( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
 };
 
 struct NReturnStatement : public NStatement
@@ -181,7 +191,7 @@ struct NBlock : public NStatement
     {
     }
 
-    DtValue Evaluate( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
 };
 
 struct NFunctionDefinition : public NStatement
@@ -197,7 +207,7 @@ struct NFunctionDefinition : public NStatement
 	{
 	}
 	
-	virtual DtValue Call( DtValueMap & Context ) = 0;
+	virtual DtValue Call( Context & Ctx ) = 0;
 };
 
 struct NUserFunctionDefinition : public NFunctionDefinition
@@ -210,8 +220,8 @@ struct NUserFunctionDefinition : public NFunctionDefinition
     {
     }
 
-    DtValue Evaluate( DtValueMap & Context );
-	DtValue Call( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
+	DtValue Call( Context & Ctx );
 };
 
 struct NBuiltInFunctionDefinition : public NFunctionDefinition
@@ -224,8 +234,8 @@ struct NBuiltInFunctionDefinition : public NFunctionDefinition
     {
     }
 
-    DtValue Evaluate( DtValueMap & Context );
-	DtValue Call( DtValueMap & Context );
+    DtValue Evaluate( Context & Ctx );
+	DtValue Call( Context & Ctx );
 };
 
 }} // Namespace Ast, ALang

@@ -14,14 +14,15 @@ using ALang::Dt::DtValue;
 using ALang::Dt::DtValueMap;
 using ALang::Dt::DtValueVec;
 
+using ALang::Ast::Context;
 using ALang::Ast::NIdentifier;
 using ALang::Ast::ParameterList;
 using ALang::Ast::NFunctionDefinition;
 using ALang::Ast::NBuiltInFunctionDefinition;
 
-DtValue ALangXPrint( DtValueMap & Context )
+DtValue ALangXPrint( Context & Ctx )
 {
-	DtValueVec *PVec = boost::any_cast< DtValueVec >( & Context[ "Argv" ].Data );
+	DtValueVec *PVec = boost::any_cast< DtValueVec >( & Ctx.Local[ "Argv" ].Data );
 	
 	for( auto & Val : *PVec )
 		std::cout << Val << "\n";
@@ -29,7 +30,7 @@ DtValue ALangXPrint( DtValueMap & Context )
 	return DtValue();
 }
 
-void CreateBuiltInFunction( DtValueMap & Context )
+void CreateBuiltInFunction( Context & Ctx )
 {
 	std::string *A = new std::string( "Argv" );
 	std::string *N = new std::string( "Print" );
@@ -40,7 +41,7 @@ void CreateBuiltInFunction( DtValueMap & Context )
 		
 	NFunctionDefinition *F = new NBuiltInFunctionDefinition( *I, P, ALangXPrint, 0 );
 
-	F->Evaluate( Context );
+	F->Evaluate( Ctx );
 }
 
 int main( int Argc, char *Argv[] )
@@ -62,13 +63,14 @@ int main( int Argc, char *Argv[] )
         yyin = Fp;
     }
 
-    DtValueMap Context;
+    DtValueMap Hash;
+    Context Ctx( Hash, Hash );
     
     yyparse();
 
-	CreateBuiltInFunction( Context );
+	CreateBuiltInFunction( Ctx );
 
-    Program->Evaluate( Context );
+    Program->Evaluate( Ctx );
     
     if( Fp != nullptr )
         fclose( Fp );
