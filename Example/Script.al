@@ -21,7 +21,7 @@ Func some_func2( arg ... )
 # Define variables
 age = 12.5
 name = "Ram Poudel"
-address = '1400 Penselvenia Ave, DC'
+address = '1400 Pennsylvania Ave, DC'
 
 # Function call
 some_func1( address, age, name )
