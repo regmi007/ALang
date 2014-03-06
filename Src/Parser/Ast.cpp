@@ -50,13 +50,20 @@ DtValue NString::Evaluate( DtValueMap & Context )
 
 DtValue NIdentifier::Evaluate( DtValueMap & Context )
 {
-	return Context.at( this->Val );
+	try
+    {
+		return Context.at( this->Val );
+	}
+	catch( std::out_of_range & E )
+	{
+		std::cout << "Undefined variable " << this->Val << "\n";
+		throw;
+	}
 }
 
 DtValue NAssignment::Evaluate( DtValueMap & Context )
 {	
 	Context[ this->Identifier.Val ] =  this->Rhs.Evaluate( Context );
-	std::cout << "Variable: " << this->Identifier.Val << " " << "created\n";
 
     return DtValue();
 }
@@ -77,10 +84,12 @@ DtValue NFunctionCall::Evaluate( DtValueMap & Context )
 	}
 
 	DtValueMap Local;
-	
+
 	if( PNodeFunc->ArgsType == 0 )
 	{
-		Local[ PNodeFunc->Arguments[ 0 ]->Val ] = DtValueVec();
+		DtValue V = DtValueVec();
+		
+		Local[ PNodeFunc->Arguments[ 0 ]->Val ] = V;
 		
 		for( std::size_t i = 0; i < this->ExpList.size(); ++i )
 		{
@@ -98,27 +107,33 @@ DtValue NFunctionCall::Evaluate( DtValueMap & Context )
 		}	
 	}
 	
-	return PNodeFunc->Evaluate( Local );
+	return PNodeFunc->Call( Local );
 }
 
 DtValue NUserFunctionDefinition::Evaluate( DtValueMap & Context )
 {
 	DtValue NFunc;
-	NFunc.Data = this;
+	NFunc.Data = ( NFunctionDefinition* ) this;
 	NFunc.Type = & DtALangNode;
 
-	Context[ this->Identifier.Val ] = NFunc;
-	
-	return NFunc;
+	return Context[ this->Identifier.Val ] = NFunc;
+}
+
+DtValue NUserFunctionDefinition::Call( DtValueMap & Context )
+{
+	return this->Block.Evaluate( Context );
 }
 
 DtValue NBuiltInFunctionDefinition::Evaluate( DtValueMap & Context )
 {
 	DtValue NFunc;
-	NFunc.Data = this;
+	NFunc.Data = ( NFunctionDefinition* ) this;
 	NFunc.Type = & DtALangNode;
 
-	Context[ this->Identifier.Val ] = NFunc;
-	
-	return NFunc;
+	return Context[ this->Identifier.Val ] = NFunc;
+}
+
+DtValue NBuiltInFunctionDefinition::Call( DtValueMap & Context )
+{
+	return this->Function( Context );
 }

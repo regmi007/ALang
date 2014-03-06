@@ -98,8 +98,11 @@ void DataTypeArray::ToStream( std::ostream & Out, const DtValue & Rhs )
     Out << "[ ";
     for( std::size_t i = 0; i < Size; ++i )
     {
-        Out << ( *PVecRhs )[ i ];
-
+		if( ( *PVecRhs )[ i ].Type == & DtString )
+			Out << "'" << ( *PVecRhs )[ i ] << "'";
+        else
+			Out << ( *PVecRhs )[ i ];
+			
         if( i != Size - 1 )
             Out << ", ";
     }

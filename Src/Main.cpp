@@ -31,9 +31,12 @@ DtValue ALangXPrint( DtValueMap & Context )
 
 void CreateBuiltInFunction( DtValueMap & Context )
 {
-	ParameterList 	P { new NIdentifier( "Argv" ) };
+	std::string *A = new std::string( "Argv" );
+	std::string *N = new std::string( "Print" );
+	
+	ParameterList 	P { new NIdentifier( *A ) };
 
-	NIdentifier *I = new NIdentifier( "Print" );
+	NIdentifier *I = new NIdentifier( *N );
 		
 	NFunctionDefinition *F = new NBuiltInFunctionDefinition( *I, P, ALangXPrint, 0 );
 

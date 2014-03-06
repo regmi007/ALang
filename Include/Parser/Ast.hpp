@@ -196,6 +196,8 @@ struct NFunctionDefinition : public NStatement
         ArgsType( T )
 	{
 	}
+	
+	virtual DtValue Call( DtValueMap & Context ) = 0;
 };
 
 struct NUserFunctionDefinition : public NFunctionDefinition
@@ -209,6 +211,7 @@ struct NUserFunctionDefinition : public NFunctionDefinition
     }
 
     DtValue Evaluate( DtValueMap & Context );
+	DtValue Call( DtValueMap & Context );
 };
 
 struct NBuiltInFunctionDefinition : public NFunctionDefinition
@@ -222,6 +225,7 @@ struct NBuiltInFunctionDefinition : public NFunctionDefinition
     }
 
     DtValue Evaluate( DtValueMap & Context );
+	DtValue Call( DtValueMap & Context );
 };
 
 }} // Namespace Ast, ALang

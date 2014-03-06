@@ -81,7 +81,7 @@ void DataTypeString::ToStream( std::ostream & Out, const DtValue & Rhs )
         PStrRhs = boost::any_cast< const std::string >( PData );        
     }
 
-    Out << "'" << *PStrRhs << "'";
+    Out << *PStrRhs;
 }
 
 DtValue DataTypeString::Size( const DtValue & Lhs )
