@@ -1,10 +1,9 @@
 ALang
-=====
-
-Yet Another Programming Language.
-Features:
-    - Object oriented.
-    - Syntax similar to Python & SLang.
+==================
+    Yet Another Programming Language.
+    Features:
+        - Object oriented.
+        - Syntax similar to Python & SLang.
 
 Build dependencies.
 -------------------
