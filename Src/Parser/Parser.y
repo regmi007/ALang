@@ -114,6 +114,16 @@ Expression : Identifier TEQUAL Expression          { $$ = new ALang::Ast::NAssig
     | Expression TPOW   Expression          { $$ = new ALang::Ast::NBinaryOperator( *$1, $2, *$3 ); }
     | Expression Comparison Expression      { $$ = new ALang::Ast::NBinaryOperator( *$1, $2, *$3 ); }
     | TLPAREN Expression TRPAREN            { $$ = $2; }
+    | TLPAREN TRPAREN                       {
+                                                ALang::Ast::ExpressionList El;
+                                                ALang::Ast::NIdentifier *I = new ALang::Ast::NIdentifier( *( new std::string( "Array" ) ) );
+                                                $$ = new ALang::Ast::NFunctionCall( *I, El );
+                                            }
+    | TLBRACE TRBRACE                       {
+                                                ALang::Ast::ExpressionList El;
+                                                ALang::Ast::NIdentifier *I = new ALang::Ast::NIdentifier( *( new std::string( "Struct" ) ) );
+                                                $$ = new ALang::Ast::NFunctionCall( *I, El );
+                                            }
 	;
 
 ExpressionList: /* Blank */                 { $$ = new ALang::Ast::ExpressionList(); }
