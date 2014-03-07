@@ -41,7 +41,7 @@ void yyerror( const char *S )
 %token <Token>  TLPAREN TRPAREN TLBRACE TRBRACE TLBRACKET TRBRACKET
 %token <Token>  TNOP TCOMMA TDOT TELLIPSIS TINDENT TDEDENT TCOLON
 %token <Token>  TPLUS TMINUS TMUL TDIV TPOW
-%token <Token>  TEOL TRETURN TIF TELSE TELIF TWHILE TFUNC
+%token <Token>  TEOL TRETURN TIF TELSE TELIF TWHILE TFOR TFUNC
 
 /* Define the type of node our nonterminal symbols represent.
  *  The types refer to the %union declaration above.
@@ -76,7 +76,7 @@ Statements : Statement  { $$ = new ALang::Ast::NBlock(); $$->Statements.push_bac
 Statement : Expression TEOL     { $$ = new ALang::Ast::NExpressionStatement( *$1 ); }
     | TRETURN Expression TEOL   { $$ = new ALang::Ast::NReturnStatement( *$2 ); }
     | ConditionalStatement      {   }
-    | TWHILE Expression Block   {   }
+    | TFOR TLPAREN Identifier TCOLON Expression TRPAREN Block   { $$ = new ALang::Ast::NForStatement( *$3, *$5, *$7 );  }
     | TFUNC Identifier TLPAREN Identifier TELLIPSIS TRPAREN Block { ALang::Ast::ParameterList 	P { $4 }; $$ = new ALang::Ast::NUserFunctionDefinition( *$2, P, *$7, 0 ); }
     | TFUNC Identifier TLPAREN ParameterList TRPAREN Block { $$ = new ALang::Ast::NUserFunctionDefinition( *$2, *$4, *$6, 1 ); delete $4; }
     ;

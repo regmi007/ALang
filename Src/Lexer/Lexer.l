@@ -95,6 +95,7 @@ EXP	([Ee][-+]?[0-9]+)
 "Else"                  PRINT_TOKEN( "TELSE", "" );    return TOKEN( TELSE );
 "Elif"                  PRINT_TOKEN( "TELIF", "" );    return TOKEN( TELIF );
 "While"                 PRINT_TOKEN( "TWHILE", "" );   return TOKEN( TWHILE );
+"For"                   PRINT_TOKEN( "TFOR", "" );     return TOKEN( TFOR );
 
 "\"".*"\""              {
                             PRINT_TOKEN( "TSTRING", yytext );

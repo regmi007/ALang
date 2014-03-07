@@ -16,14 +16,22 @@ Func some_func1( a, b, c )
 
 # This function takes variable number of arguments
 Func some_func2( arg ... )
-    Print( "Hello from VARIABLE argument func", arg )
+    Print( "Hello from VARIABLE argument func" )
+    Print( "Printing Array: ", arg )
+
+    Print( "" )
+    Print( "Iterating Array: " )
+    # Iterating array
+    For( v : arg )
+        Print( v )
 
 # Define variables
 age = 12.5
 name = "Ram Poudel"
 address = '1400 Pennsylvania Ave, DC'
+zip = 31117
 
 # Function call
 some_func1( address, age, name )
-some_func2( 1, 2, 'Hi', 4, 'Hello World' )
+some_func2( age, name, address, zip, 1, 2, 3, 4, 5 )
 

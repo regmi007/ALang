@@ -9,6 +9,7 @@ using ALang::Ast::NString;
 using ALang::Ast::NInteger;
 using ALang::Ast::NIdentifier;
 using ALang::Ast::NAssignment;
+using ALang::Ast::NForStatement;
 using ALang::Ast::NFunctionCall;
 using ALang::Ast::NExpressionStatement;
 using ALang::Ast::NUserFunctionDefinition;
@@ -101,7 +102,8 @@ DtValue NFunctionCall::Evaluate( Context & Ctx )
 		for( std::size_t i = 0; i < this->ExpList.size(); ++i )
 		{
 			Local[ PNodeFunc->Arguments[ 0 ]->Val ][ i ] = this->ExpList[ i ]->Evaluate( Ctx );
-		}	
+			//this->ExpList[ i ]->Evaluate( Ctx );
+		}
 	}
 	else
 	{
@@ -143,4 +145,33 @@ DtValue NBuiltInFunctionDefinition::Evaluate( Context & Ctx )
 DtValue NBuiltInFunctionDefinition::Call( Context & Ctx )
 {
 	return this->Function( Ctx );
+}
+
+DtValue NForStatement::Evaluate( Context & Ctx )
+{
+    DtValue Res = this->Expression.Evaluate( Ctx );
+
+    if( Res.Type != & DtArray )
+    {
+        std::cout << "You should not try iterating none-iterable type.\n";
+        throw std::string( "Should fix with some exception type" );
+    }
+
+    Ctx.Local[ this->Identifier.Val ] = DtValue();
+
+    DtValueVec *PVecRes = nullptr;
+
+    PVecRes = boost::any_cast< DtValueVec >( & Res.Data );
+
+    for( auto & V : *PVecRes )
+    {
+        if( V.Type != & DtDouble )
+            Ctx.Local[ this->Identifier.Val ] = & V;
+        else
+            Ctx.Local[ this->Identifier.Val ] = V;
+
+        this->Block.Evaluate( Ctx );
+    }
+
+    return DtValue();
 }

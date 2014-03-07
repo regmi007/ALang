@@ -194,6 +194,23 @@ struct NBlock : public NStatement
     DtValue Evaluate( Context & Ctx );
 };
 
+struct NForStatement : public NStatement
+{
+   	const NIdentifier & Identifier;
+	NExpression & Expression;
+	NBlock & Block;
+
+	NForStatement( const NIdentifier & I, NExpression & E, NBlock & B ):
+        NStatement(),
+        Identifier( I ),
+		Expression( E ),
+        Block( B )
+    {
+    }
+
+    DtValue Evaluate( Context & Ctx );
+};
+
 struct NFunctionDefinition : public NStatement
 {
 	const NIdentifier & Identifier;
