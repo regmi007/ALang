@@ -11,6 +11,7 @@ using ALang::Ast::NIdentifier;
 using ALang::Ast::NAssignment;
 using ALang::Ast::NForStatement;
 using ALang::Ast::NFunctionCall;
+using ALang::Ast::NArrayDefination;
 using ALang::Ast::NExpressionStatement;
 using ALang::Ast::NUserFunctionDefinition;
 using ALang::Ast::NBuiltInFunctionDefinition;
@@ -145,6 +146,18 @@ DtValue NBuiltInFunctionDefinition::Evaluate( Context & Ctx )
 DtValue NBuiltInFunctionDefinition::Call( Context & Ctx )
 {
 	return this->Function( Ctx );
+}
+
+DtValue NArrayDefination::Evaluate( Context & Ctx )
+{
+	DtValueVec Vec;
+	
+	for( auto & Val : this->ExpList )
+	{
+		Vec.push_back( Val->Evaluate( Ctx ) );
+	}
+	
+	return DtValue( Vec );
 }
 
 DtValue NForStatement::Evaluate( Context & Ctx )

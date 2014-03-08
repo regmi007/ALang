@@ -59,8 +59,7 @@ void CreateBuiltInFunction( Context & Ctx )
     P.clear();
 	I = new NIdentifier( *(  new std::string( "Array" ) ) );
 	F = new NBuiltInFunctionDefinition( *I, P, ALangXArray, 1 );
-	F->Evaluate( Ctx );
-
+	
     // Creating Ast node for Struct()
     P.clear();
 	I = new NIdentifier( *(  new std::string( "Struct" ) ) );

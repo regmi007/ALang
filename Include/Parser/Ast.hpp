@@ -124,6 +124,23 @@ struct NFunctionCall : public NExpression
     DtValue Evaluate( Context & Ctx );
 };
 
+struct NArrayDefination : public NExpression
+{
+    ExpressionList ExpList;
+
+    NArrayDefination(): NExpression(), ExpList()
+    {
+    }
+
+    NArrayDefination( const ExpressionList & List ):
+        NExpression(),
+        ExpList( List )
+    {
+    }
+
+    DtValue Evaluate( Context & Ctx );
+};
+
 struct NBinaryOperator : NExpression
 {
     int Operation;
