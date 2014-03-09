@@ -8,16 +8,27 @@ ALang
 Build dependencies.
 -------------------
     - flex: Lexical analysis.
-      sudo aptitude install flex
+      $ sudo aptitude install flex
 
     - bison: Parser genarator.
-      sudo aptitude install bison
+      $ sudo aptitude install bison
 
     - boost: Boost C++ library.
-      sudo aptitude install libboost-dev
+      $ sudo aptitude install libboost-dev
 
     - cmake: Build tool
-      sudo aptitude install cmake
+      $ sudo aptitude install cmake
+
+To generate documentstion.
+----------------------------
+    - doxygen: To generae doc.
+      $ sudo aptitude install doxygen
+      
+    - graphviz: To generate class diagrame.   
+      $ sudo aptitude install graphviz
+    
+    - To generate doc, inside /path/to/ALang/Resources/Doc/
+      $ doxygen doxygen.cfg
 
 How to build.
 -------------------

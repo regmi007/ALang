@@ -143,9 +143,9 @@ struct NFunctionCall : public NExpression
     {
     }
 
-	/** Make a function call.
-	 * @param Ctx Context for the call.
-	 */
+    /** Make a function call.
+     * @param Ctx Context for the call.
+     */
     DtValue Evaluate( Context & Ctx );
 };
 
@@ -153,7 +153,7 @@ struct NFunctionCall : public NExpression
  */
 struct NArrayDefination : public NExpression
 {
-    ExpressionList ExpList;		///< List of items in the array.
+    ExpressionList ExpList;	    ///< List of items in the array.
 
     NArrayDefination(): NExpression(), ExpList()
     {
@@ -265,9 +265,9 @@ struct NForStatement : public NStatement
     {
     }
 
-	/** Execute the for loop.
-	 * @param Ctx Context for the function.
-	 */
+    /** Execute the for loop.
+     * @param Ctx Context for the function.
+     */
     DtValue Evaluate( Context & Ctx );
 };
 
@@ -286,9 +286,9 @@ struct NFunctionDefinition : public NStatement
 	{
 	}
 	
-	/** Make a function call.
-	 * @param Ctx Context for the function.
-	 */
+    /** Make a function call.
+     * @param Ctx Context for the function.
+     */
 	virtual DtValue Call( Context & Ctx ) = 0;
 };
 
@@ -305,13 +305,13 @@ struct NUserFunctionDefinition : public NFunctionDefinition
     }
 
     /** Register the function in the supplied context.
-	 * @param Ctx Context for the function.
-	 */
+     * @param Ctx Context for the function.
+     */
     DtValue Evaluate( Context & Ctx );
     
     /** Make a function call.
-	 * @param Ctx Context for the function.
-	 */
+     * @param Ctx Context for the function.
+     */
 	DtValue Call( Context & Ctx );
 };
 
@@ -328,13 +328,13 @@ struct NBuiltInFunctionDefinition : public NFunctionDefinition
     }
 
     /** Register the function  in the supplied context.
-	 * @param Ctx Context for the function.
-	 */
+     * @param Ctx Context for the function.
+     */
     DtValue Evaluate( Context & Ctx );
     
     /** Make a function call.
-	 * @param Ctx Context for the function.
-	 */
+     * @param Ctx Context for the function.
+     */
 	DtValue Call( Context & Ctx );
 };
 
