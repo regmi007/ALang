@@ -4,7 +4,7 @@ SET( LIB_DATATYPE_SRC
     DataTypeString.cpp
     DataTypeArray.cpp
     DataTypeStruct.cpp
-    DataTypeALangNode.cpp
+    DataTypeAstNode.cpp
 )
 
 ADD_LIBRARY( ALangDataType SHARED ${LIB_DATATYPE_SRC} )

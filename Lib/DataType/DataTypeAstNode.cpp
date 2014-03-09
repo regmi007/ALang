@@ -5,6 +5,6 @@
 using ALang::Ast::Node;
 
 using ALang::Dt::DtValue;
-using ALang::Dt::DataTypeALangNode;
+using ALang::Dt::DataTypeAstNode;
 
-DataTypeALangNode DtALangNode;
+DataTypeAstNode DtAstNode;

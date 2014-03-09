@@ -103,7 +103,6 @@ DtValue NFunctionCall::Evaluate( Context & Ctx )
 		for( std::size_t i = 0; i < this->ExpList.size(); ++i )
 		{
 			Local[ PNodeFunc->Arguments[ 0 ]->Val ][ i ] = this->ExpList[ i ]->Evaluate( Ctx );
-			//this->ExpList[ i ]->Evaluate( Ctx );
 		}
 	}
 	else
@@ -124,7 +123,7 @@ DtValue NUserFunctionDefinition::Evaluate( Context & Ctx )
 {
 	DtValue NFunc;
 	NFunc.Data = ( NFunctionDefinition* ) this;
-	NFunc.Type = & DtALangNode;
+	NFunc.Type = & DtAstNode;
 
 	return Ctx.Local[ this->Identifier.Val ] = NFunc;
 }
@@ -138,7 +137,7 @@ DtValue NBuiltInFunctionDefinition::Evaluate( Context & Ctx )
 {
 	DtValue NFunc;
 	NFunc.Data = ( NFunctionDefinition* ) this;
-	NFunc.Type = & DtALangNode;
+	NFunc.Type = & DtAstNode;
 
 	return Ctx.Local[ this->Identifier.Val ] = NFunc;
 }
