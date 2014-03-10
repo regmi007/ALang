@@ -26,13 +26,7 @@ Func var_arg_func( arg ... )
     # arr = [] or arr = Array()
     arr = [ 'Creating', 2.34, "Array" ]
 
-    #Iterate Array
-    For( val : arr )
-        Print( val )
-
-    Print()
-
-    return arr
+    Return arr
     
     # Create structure
     # Empty structure can be created like
@@ -53,5 +47,10 @@ zip = 31117
 
 # Function call
 fixed_arg_func( address, age, name )
-var_arg_func( age, name, address, zip, 1, 'Hello', 3, 4, "World", 3 )
+a = var_arg_func( age, name, address, zip, 1, 'Hello', 3, 4, "World", 3 )
 
+Print( "Returned value:" )
+
+#Iterate Array
+For( val : a )
+    Print( val )
