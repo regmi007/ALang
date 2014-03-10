@@ -12,9 +12,11 @@ using ALang::Ast::NAssignment;
 using ALang::Ast::NForStatement;
 using ALang::Ast::NFunctionCall;
 using ALang::Ast::NArrayDefination;
+using ALang::Ast::NReturnStatement;
 using ALang::Ast::NExpressionStatement;
 using ALang::Ast::NUserFunctionDefinition;
 using ALang::Ast::NBuiltInFunctionDefinition;
+using ALang::Ast::NReturnExpressionStatement;
 
 using ALang::Dt::DtValue;
 using ALang::Dt::DtValueVec;
@@ -23,14 +25,29 @@ using ALang::Dt::DtValueMap;
 DtValue NBlock::Evaluate( Context & Ctx )
 {
 	DtValue Ret;
-	
+    
 	for( auto Stmt : this->Statements )
+    {
 	    Ret = Stmt->Evaluate( Ctx );
-	    
+        
+        if( Stmt->Type == StatementType::RETURN )
+            return Ret;
+    }
+
 	return Ret;
 }
 
 DtValue NExpressionStatement::Evaluate( Context & Ctx )
+{
+	return this->Expression.Evaluate( Ctx );
+}
+
+DtValue NReturnStatement::Evaluate( Context & Ctx )
+{
+	return DtValue();
+}
+
+DtValue NReturnExpressionStatement::Evaluate( Context & Ctx )
 {
 	return this->Expression.Evaluate( Ctx );
 }
@@ -94,7 +111,7 @@ DtValue NFunctionCall::Evaluate( Context & Ctx )
 	DtValueMap Local;
     Context NewCtx( Local, Ctx.Global );
 
-	if( PNodeFunc->ArgsType == 0 )
+	if( PNodeFunc->ArgsType == ArgumentType::VARIABLE_LENGTH )
 	{
 		DtValue V = DtValueVec();
 		

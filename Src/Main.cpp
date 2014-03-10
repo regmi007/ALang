@@ -20,9 +20,11 @@ using ALang::Ast::ParameterList;
 using ALang::Ast::NFunctionDefinition;
 using ALang::Ast::NBuiltInFunctionDefinition;
 
+using ALang::Ast::ArgumentType;
+
 DtValue ALangXPrint( Context & Ctx )
 {
-	DtValueVec *PVec = boost::any_cast< DtValueVec >( & Ctx.Local[ "Argv" ].Data );
+    DtValueVec *PVec = boost::any_cast< DtValueVec >( & Ctx.Local[ "Argv" ].Data );
 
     if( PVec->size() == 0 )
         std::cout << "\n";
@@ -45,26 +47,26 @@ DtValue ALangXStruct( Context & Ctx )
 
 void CreateBuiltInFunction( Context & Ctx )
 {
- 	ParameterList 	    P;
-	NIdentifier         *I = nullptr;
-	NFunctionDefinition *F = nullptr;
+    ParameterList 	    P;
+    NIdentifier         *I = nullptr;
+    NFunctionDefinition *F = nullptr;
 
     // Creating Ast node for Print()
-	P.push_back( new NIdentifier( *(  new std::string( "Argv" ) ) ) );
-	I = new NIdentifier( *(  new std::string( "Print" ) ) );
-	F = new NBuiltInFunctionDefinition( *I, P, ALangXPrint, 0 );
-	F->Evaluate( Ctx );
+    P.push_back( new NIdentifier( *(  new std::string( "Argv" ) ) ) );
+    I = new NIdentifier( *(  new std::string( "Print" ) ) );
+    F = new NBuiltInFunctionDefinition( *I, P, ALangXPrint, ArgumentType::VARIABLE_LENGTH );
+    F->Evaluate( Ctx );
 
     // Creating Ast node for Array()
     P.clear();
-	I = new NIdentifier( *(  new std::string( "Array" ) ) );
-	F = new NBuiltInFunctionDefinition( *I, P, ALangXArray, 1 );
+    I = new NIdentifier( *(  new std::string( "Array" ) ) );
+    F = new NBuiltInFunctionDefinition( *I, P, ALangXArray, ArgumentType::FIXED_LENGTH );
 	
     // Creating Ast node for Struct()
     P.clear();
-	I = new NIdentifier( *(  new std::string( "Struct" ) ) );
-	F = new NBuiltInFunctionDefinition( *I, P, ALangXStruct, 1 );
-	F->Evaluate( Ctx );
+    I = new NIdentifier( *(  new std::string( "Struct" ) ) );
+    F = new NBuiltInFunctionDefinition( *I, P, ALangXStruct, ArgumentType::FIXED_LENGTH );
+    F->Evaluate( Ctx );
 }
 
 int main( int Argc, char *Argv[] )

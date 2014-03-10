@@ -23,6 +23,27 @@ struct Context
     }
 };
 
+/** Different Type of arguments a function take.
+ */
+enum class ArgumentType
+{
+    FIXED_LENGTH,
+    VARIABLE_LENGTH
+};
+
+/** Different Type of statements.
+ */
+enum class StatementType
+{
+    EXPRESSION,
+    RETURN,
+    FOR,
+    CONDITIONAL,
+    WHILE,
+    FUNCTION,
+    BLOCK
+};
+
 struct NExpression;
 struct NStatement;
 struct NIdentifier;
@@ -55,7 +76,9 @@ struct Node
  */ 
 struct NStatement : public Node
 {
-    NStatement() : Node()
+    StatementType Type;
+    
+    NStatement( StatementType T ) : Node(), Type( T )
     {
     }
 };
@@ -212,7 +235,8 @@ struct NExpressionStatement : public NStatement
 {
 	NExpression & Expression;
 
-	NExpressionStatement( NExpression & Expr ) : 
+	NExpressionStatement( NExpression & Expr ) :
+        NStatement( StatementType::EXPRESSION ),
 		Expression( Expr )
 	{
 	}
@@ -220,19 +244,31 @@ struct NExpressionStatement : public NStatement
     DtValue Evaluate( Context & Ctx );
 };
 
-/** Ast node for return statement .
+/** Ast node for return statement.
  */
 struct NReturnStatement : public NStatement
+{    
+	NReturnStatement(): NStatement( StatementType::RETURN )
+    {
+    }
+
+    DtValue Evaluate( Context & Ctx );
+};
+
+/** Ast node for return statement.
+ * eg, return value
+ */
+struct NReturnExpressionStatement : public NReturnStatement
 {
 	NExpression & Expression;	///< Expression to return.
     
-	NReturnStatement( NExpression & Exp ):
-        NStatement(),
+	NReturnExpressionStatement( NExpression & Exp ):
+        NReturnStatement(),
 		Expression( Exp )
     {
     }
 
-    //DtValue Evaluate( Context & Ctx );
+    DtValue Evaluate( Context & Ctx );
 };
 
 /** Ast node for code block.
@@ -241,7 +277,7 @@ struct NBlock : public NStatement
 {
 	StatementList Statements;
 
-	NBlock() : NStatement()
+	NBlock(): NStatement( StatementType::BLOCK )
     {
     }
 
@@ -258,7 +294,7 @@ struct NForStatement : public NStatement
 	NBlock & Block;					///< Code block to evaluate for each value
 
 	NForStatement( const NIdentifier & I, NExpression & E, NBlock & B ):
-        NStatement(),
+        NStatement( StatementType::FOR ),
         Identifier( I ),
 		Expression( E ),
         Block( B )
@@ -277,12 +313,13 @@ struct NFunctionDefinition : public NStatement
 {
 	const NIdentifier & Identifier;		///< Identifier defining the name of the function.
 	ParameterList 		Arguments;		///< List of name of argument this function accepts.
-    int ArgsType;						///< Type of args  this function accepts. Variable arg or fixed arg.
+    ArgumentType ArgsType;						///< Type of args  this function accepts. Variable arg or fixed arg.
     
-	NFunctionDefinition(  const NIdentifier & I,  const ParameterList & Args, int T ):
+	NFunctionDefinition(  const NIdentifier & I,  const ParameterList & Args, ArgumentType At ):
+        NStatement( StatementType::FUNCTION ),
 		Identifier( I ),
         Arguments( Args ),
-        ArgsType( T )
+        ArgsType( At )
 	{
 	}
 	
@@ -298,8 +335,8 @@ struct NUserFunctionDefinition : public NFunctionDefinition
 {
 	NBlock & Block;		///< Code block to evaluate when function is called.
 
-	NUserFunctionDefinition( const NIdentifier & I, const ParameterList & Args, NBlock & Block, int T ):
-		NFunctionDefinition( I, Args, T ),
+	NUserFunctionDefinition( const NIdentifier & I, const ParameterList & Args, NBlock & Block, ArgumentType At ):
+		NFunctionDefinition( I, Args, At ),
         Block( Block )
     {
     }
@@ -321,8 +358,8 @@ struct NBuiltInFunctionDefinition : public NFunctionDefinition
 {
     BuiltInFunction Function;		///< Function to call when this functin is called.
 
-	NBuiltInFunctionDefinition( const NIdentifier & I, const ParameterList & Args, BuiltInFunction F, int T ):
-		NFunctionDefinition( I, Args, T ),
+	NBuiltInFunctionDefinition( const NIdentifier & I, const ParameterList & Args, BuiltInFunction F, ArgumentType At ):
+		NFunctionDefinition( I, Args, At ),
         Function( F )
     {
     }

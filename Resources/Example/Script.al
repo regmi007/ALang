@@ -32,6 +32,8 @@ Func var_arg_func( arg ... )
 
     Print()
 
+    return arr
+    
     # Create structure
     # Empty structure can be created like
     # arr = {} or arr = Struct()

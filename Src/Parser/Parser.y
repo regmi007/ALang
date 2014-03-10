@@ -74,11 +74,12 @@ Statements : Statement  { $$ = new ALang::Ast::NBlock(); $$->Statements.push_bac
     ;
 
 Statement : Expression TEOL     { $$ = new ALang::Ast::NExpressionStatement( *$1 ); }
-    | TRETURN Expression TEOL   { $$ = new ALang::Ast::NReturnStatement( *$2 ); }
+    | TRETURN TEOL              { $$ = new ALang::Ast::NReturnStatement(); }
+    | TRETURN Expression TEOL   { $$ = new ALang::Ast::NReturnExpressionStatement( *$2 ); }
     | ConditionalStatement      {   }
     | TFOR TLPAREN Identifier TCOLON Expression TRPAREN Block   { $$ = new ALang::Ast::NForStatement( *$3, *$5, *$7 );  }
-    | TFUNC Identifier TLPAREN Identifier TELLIPSIS TRPAREN Block { ALang::Ast::ParameterList 	P { $4 }; $$ = new ALang::Ast::NUserFunctionDefinition( *$2, P, *$7, 0 ); }
-    | TFUNC Identifier TLPAREN ParameterList TRPAREN Block { $$ = new ALang::Ast::NUserFunctionDefinition( *$2, *$4, *$6, 1 ); delete $4; }
+    | TFUNC Identifier TLPAREN Identifier TELLIPSIS TRPAREN Block { ALang::Ast::ParameterList 	P { $4 }; $$ = new ALang::Ast::NUserFunctionDefinition( *$2, P, *$7, ALang::Ast::ArgumentType::VARIABLE_LENGTH ); }
+    | TFUNC Identifier TLPAREN ParameterList TRPAREN Block { $$ = new ALang::Ast::NUserFunctionDefinition( *$2, *$4, *$6, ALang::Ast::ArgumentType::FIXED_LENGTH ); delete $4; }
     ;
 
 ConditionalStatement : IfStatement  {   }
