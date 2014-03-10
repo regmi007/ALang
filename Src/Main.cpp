@@ -29,10 +29,10 @@ DtValue ALangXPrint( Context & Ctx )
     if( PVec->size() == 0 )
         std::cout << "\n";
     else
-    	for( auto & Val : *PVec )
-	    	std::cout << Val << "\n";
+        for( auto & Val : *PVec )
+            std::cout << Val << "\n";
 
-	return DtValue();
+    return DtValue();
 }
 
 DtValue ALangXArray( Context & Ctx )
@@ -47,7 +47,7 @@ DtValue ALangXStruct( Context & Ctx )
 
 void CreateBuiltInFunction( Context & Ctx )
 {
-    ParameterList 	    P;
+    ParameterList       P;
     NIdentifier         *I = nullptr;
     NFunctionDefinition *F = nullptr;
 
@@ -61,7 +61,7 @@ void CreateBuiltInFunction( Context & Ctx )
     P.clear();
     I = new NIdentifier( *(  new std::string( "Array" ) ) );
     F = new NBuiltInFunctionDefinition( *I, P, ALangXArray, ArgumentType::FIXED_LENGTH );
-	
+    
     // Creating Ast node for Struct()
     P.clear();
     I = new NIdentifier( *(  new std::string( "Struct" ) ) );
@@ -93,7 +93,7 @@ int main( int Argc, char *Argv[] )
     
     yyparse();
 
-	CreateBuiltInFunction( Ctx );
+    CreateBuiltInFunction( Ctx );
 
     Program->Evaluate( Ctx );
     

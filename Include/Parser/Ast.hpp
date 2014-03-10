@@ -15,7 +15,7 @@ namespace ALang { namespace Ast {
  */ 
 struct Context
 {
-    DtValueMap & Local;		///< Map containing local symbols.
+    DtValueMap & Local;     ///< Map containing local symbols.
     DtValueMap & Global;    ///< Map containing globals symbols.
 
     Context( DtValueMap & L, DtValueMap & G ) : Local( L ), Global( G )
@@ -64,8 +64,8 @@ struct Node
     {
     }
 
-	/** Function to evaluate each node.
-	 */
+    /** Function to evaluate each node.
+     */
     virtual DtValue Evaluate( Context & Ctx )
     {
         return DtValue();
@@ -96,7 +96,7 @@ struct NExpression : public Node
  */
 struct NInteger : public NExpression
 {
-    int Val;	///< Integer value this node holds.
+    int Val;    ///< Integer value this node holds.
 
     NInteger( const std::string & Str ) : NExpression(), Val( std::stoi( Str ) )
     {
@@ -109,7 +109,7 @@ struct NInteger : public NExpression
  */
 struct NDouble : public NExpression
 {
-    double Val;	///< Double value this node holds.
+    double Val; ///< Double value this node holds.
 
     NDouble( const std::string & Str ) : NExpression(), Val( std::stod( Str ) )
     {
@@ -122,7 +122,7 @@ struct NDouble : public NExpression
  */
 struct NString : public NExpression
 {
-    const std::string & Val;	///< String value this node holds.
+    const std::string & Val;    ///< String value this node holds.
 
     NString( const std::string & Str ) : NExpression(), Val( Str )
     {
@@ -135,7 +135,7 @@ struct NString : public NExpression
  */
 struct NIdentifier : public NExpression
 {
-    const std::string & Val;	///< Double value this node holds.
+    const std::string & Val;    ///< Double value this node holds.
 
     NIdentifier( const std::string & Str ) : NExpression(), Val( Str )
     {
@@ -148,9 +148,9 @@ struct NIdentifier : public NExpression
  */
 struct NFunctionCall : public NExpression
 {
-    const NIdentifier & Identifier;		///< Name of the function being called.
+    const NIdentifier & Identifier;     ///< Name of the function being called.
     
-    ExpressionList ExpList;				///< Argument passed to the function.
+    ExpressionList ExpList;             ///< Argument passed to the function.
 
     NFunctionCall( const NIdentifier & I, const ExpressionList & List ):
         NExpression(),
@@ -176,7 +176,7 @@ struct NFunctionCall : public NExpression
  */
 struct NArrayDefination : public NExpression
 {
-    ExpressionList ExpList;	    ///< List of items in the array.
+    ExpressionList ExpList;     ///< List of items in the array.
 
     NArrayDefination(): NExpression(), ExpList()
     {
@@ -195,10 +195,10 @@ struct NArrayDefination : public NExpression
  */
 struct NBinaryOperator : NExpression
 {
-    int Operation;		///< Type of operation.
+    int Operation;      ///< Type of operation.
 
-    NExpression & Lhs;	///< Expresssion on the left hand side.
-    NExpression & Rhs;	///< Expresssion on the right hand side.
+    NExpression & Lhs;  ///< Expresssion on the left hand side.
+    NExpression & Rhs;  ///< Expresssion on the right hand side.
 
     NBinaryOperator( NExpression & L, int O, NExpression & R ):
         NExpression(),
@@ -215,9 +215,9 @@ struct NBinaryOperator : NExpression
  */
 struct NAssignment : NExpression
 {
-    const NIdentifier & Identifier;	///< Name of the variable to which value to assign.
+    const NIdentifier & Identifier; ///< Name of the variable to which value to assign.
     
-    NExpression & Rhs;				///< Expresssion on the right hand side.
+    NExpression & Rhs;              ///< Expresssion on the right hand side.
 
     NAssignment( const NIdentifier & I, NExpression & R ):
         NExpression(),
@@ -233,13 +233,13 @@ struct NAssignment : NExpression
  */
 struct NExpressionStatement : public NStatement
 {
-	NExpression & Expression;
+    NExpression & Expression;
 
-	NExpressionStatement( NExpression & Expr ) :
+    NExpressionStatement( NExpression & Expr ) :
         NStatement( StatementType::EXPRESSION ),
-		Expression( Expr )
-	{
-	}
+        Expression( Expr )
+    {
+    }
 
     DtValue Evaluate( Context & Ctx );
 };
@@ -248,7 +248,7 @@ struct NExpressionStatement : public NStatement
  */
 struct NReturnStatement : public NStatement
 {    
-	NReturnStatement(): NStatement( StatementType::RETURN )
+    NReturnStatement(): NStatement( StatementType::RETURN )
     {
     }
 
@@ -260,11 +260,11 @@ struct NReturnStatement : public NStatement
  */
 struct NReturnExpressionStatement : public NReturnStatement
 {
-	NExpression & Expression;	///< Expression to return.
+    NExpression & Expression;   ///< Expression to return.
     
-	NReturnExpressionStatement( NExpression & Exp ):
+    NReturnExpressionStatement( NExpression & Exp ):
         NReturnStatement(),
-		Expression( Exp )
+        Expression( Exp )
     {
     }
 
@@ -275,9 +275,9 @@ struct NReturnExpressionStatement : public NReturnStatement
  */
 struct NBlock : public NStatement 
 {
-	StatementList Statements;
+    StatementList Statements;
 
-	NBlock(): NStatement( StatementType::BLOCK )
+    NBlock(): NStatement( StatementType::BLOCK )
     {
     }
 
@@ -289,14 +289,14 @@ struct NBlock : public NStatement
  */
 struct NForStatement : public NStatement
 {
-   	const NIdentifier & Identifier;
-	NExpression & Expression;
-	NBlock & Block;					///< Code block to evaluate for each value
+    const NIdentifier & Identifier;
+    NExpression & Expression;
+    NBlock & Block;                 ///< Code block to evaluate for each value
 
-	NForStatement( const NIdentifier & I, NExpression & E, NBlock & B ):
+    NForStatement( const NIdentifier & I, NExpression & E, NBlock & B ):
         NStatement( StatementType::FOR ),
         Identifier( I ),
-		Expression( E ),
+        Expression( E ),
         Block( B )
     {
     }
@@ -311,32 +311,32 @@ struct NForStatement : public NStatement
  */
 struct NFunctionDefinition : public NStatement
 {
-	const NIdentifier & Identifier;		///< Identifier defining the name of the function.
-	ParameterList 		Arguments;		///< List of name of argument this function accepts.
-    ArgumentType ArgsType;						///< Type of args  this function accepts. Variable arg or fixed arg.
+    const NIdentifier & Identifier;     ///< Identifier defining the name of the function.
+    ParameterList       Arguments;      ///< List of name of argument this function accepts.
+    ArgumentType ArgsType;                      ///< Type of args  this function accepts. Variable arg or fixed arg.
     
-	NFunctionDefinition(  const NIdentifier & I,  const ParameterList & Args, ArgumentType At ):
+    NFunctionDefinition(  const NIdentifier & I,  const ParameterList & Args, ArgumentType At ):
         NStatement( StatementType::FUNCTION ),
-		Identifier( I ),
+        Identifier( I ),
         Arguments( Args ),
         ArgsType( At )
-	{
-	}
-	
+    {
+    }
+    
     /** Make a function call.
      * @param Ctx Context for the function.
      */
-	virtual DtValue Call( Context & Ctx ) = 0;
+    virtual DtValue Call( Context & Ctx ) = 0;
 };
 
 /** Ast node for user defined function.
  */
 struct NUserFunctionDefinition : public NFunctionDefinition
 {
-	NBlock & Block;		///< Code block to evaluate when function is called.
+    NBlock & Block;     ///< Code block to evaluate when function is called.
 
-	NUserFunctionDefinition( const NIdentifier & I, const ParameterList & Args, NBlock & Block, ArgumentType At ):
-		NFunctionDefinition( I, Args, At ),
+    NUserFunctionDefinition( const NIdentifier & I, const ParameterList & Args, NBlock & Block, ArgumentType At ):
+        NFunctionDefinition( I, Args, At ),
         Block( Block )
     {
     }
@@ -349,17 +349,17 @@ struct NUserFunctionDefinition : public NFunctionDefinition
     /** Make a function call.
      * @param Ctx Context for the function.
      */
-	DtValue Call( Context & Ctx );
+    DtValue Call( Context & Ctx );
 };
 
 /** Ast node for built-in functions.
  */
 struct NBuiltInFunctionDefinition : public NFunctionDefinition
 {
-    BuiltInFunction Function;		///< Function to call when this functin is called.
+    BuiltInFunction Function;       ///< Function to call when this functin is called.
 
-	NBuiltInFunctionDefinition( const NIdentifier & I, const ParameterList & Args, BuiltInFunction F, ArgumentType At ):
-		NFunctionDefinition( I, Args, At ),
+    NBuiltInFunctionDefinition( const NIdentifier & I, const ParameterList & Args, BuiltInFunction F, ArgumentType At ):
+        NFunctionDefinition( I, Args, At ),
         Function( F )
     {
     }
@@ -372,7 +372,7 @@ struct NBuiltInFunctionDefinition : public NFunctionDefinition
     /** Make a function call.
      * @param Ctx Context for the function.
      */
-	DtValue Call( Context & Ctx );
+    DtValue Call( Context & Ctx );
 };
 
 }} // Namespace Ast, ALang

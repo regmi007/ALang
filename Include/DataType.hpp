@@ -19,131 +19,131 @@ struct DataType
 {
     ~DataType() {}
 
-	/** Function defining how = should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how = should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & Assign( DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how = should be handled by each datatype.
-	 * this assignment is for handalig assignment by pointer.
-	 * eg, DtValue v = & SomeValue
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how = should be handled by each datatype.
+     * this assignment is for handalig assignment by pointer.
+     * eg, DtValue v = & SomeValue
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & Assign( DtValue & Lhs,       DtValue * Rhs );
 
-	/** Function defining how + should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how + should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue   Add( const DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how += should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how += should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & AddAssign( DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how - should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how - should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue   Substract( const DtValue & Lhs, const DtValue & Rhs );
     
-	/** Function defining how -= should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how -= should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & SubstractAssign( DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how assignment should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how assignment should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue   Multiply( const DtValue & Lhs, const DtValue & Rhs );
     
-	/** Function defining how *= should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how *= should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & MultiplyAssign( DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how / should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how / should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue   Divide( const DtValue & Lhs, const DtValue & Rhs );
     
-	/** Function defining how /= should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how /= should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & DivideAssign( DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how < should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how < should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual bool LessThan( const DtValue & Lhs, const DtValue & Rhs );
     
-	/** Function defining how > should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how > should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual bool GreaterThan( const DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how <= should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how <= should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual bool LessThanEqualTo( const DtValue & Lhs, const DtValue & Rhs );
     
-	/** Function defining how >= should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how >= should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual bool GreaterThanEqualTo( const DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how == should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how == should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual bool EqualTo( const DtValue & Lhs, const DtValue & Rhs );
 
-	/** Function defining how  a = Val[ 'Key' ] should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how  a = Val[ 'Key' ] should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & SubScriptGetKey( const DtValue & Lhs, const std::string & Key );
     
-	/** Function defining how Val[ 'Key' ] = a should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how Val[ 'Key' ] = a should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & SubScriptSetKey(       DtValue & Lhs, const std::string & Key );
 
-	/** Function defining how a = Val[ i ] should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how a = Val[ i ] should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & SubScriptGetIndex( const DtValue & Lhs, std::size_t Index );
     
-	/** Function defining how Val[ i ] = a should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how Val[ i ] = a should be handled by each datatype.
+     * @param Lhs Value on the left.
+     * @param Rhs Value on the right.
+     */
     virtual DtValue & SubScriptSetIndex(       DtValue & Lhs, std::size_t Index );
 
-	/** Function defining how Size() should be handled by each datatype.
-	 * @param Lhs Value on the left.
-	 */
+    /** Function defining how Size() should be handled by each datatype.
+     * @param Lhs Value on the left.
+     */
     virtual DtValue Size( const DtValue & Lhs );
 
-	/** Function defining how data should be streamed by each datatype.
-	 * @param Out Stream to send output to.
-	 * @param Rhs Value on the right.
-	 */
+    /** Function defining how data should be streamed by each datatype.
+     * @param Out Stream to send output to.
+     * @param Rhs Value on the right.
+     */
     virtual void ToStream( std::ostream & Out, const DtValue & Rhs );
 };
 
@@ -245,10 +245,10 @@ struct DataTypeAstNode : public DataType
 struct DtValue
 {
     boost::any
-        Data; 		///< Data belonging tothis value.
+        Data;       ///< Data belonging tothis value.
 
     DataType
-        *Type;		///< Datatype of data this value holding.
+        *Type;      ///< Datatype of data this value holding.
 
     DtValue();
 

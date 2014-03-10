@@ -29,9 +29,9 @@ void DataTypeStruct::ToStream( std::ostream & Out, const DtValue & Rhs )
         Out << "'" << Pair.first << "': ";
         
         if( Pair.second.Type == & DtString )
-			Out << "'" << Pair.second << "'";
+            Out << "'" << Pair.second << "'";
         else
-			Out << Pair.second;
+            Out << Pair.second;
 
         if( i < PMapRhs->size() - 1)
             Out << ", ";
