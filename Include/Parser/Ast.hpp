@@ -375,6 +375,11 @@ struct NBuiltInFunctionDefinition : public NFunctionDefinition
     DtValue Call( Context & Ctx );
 };
 
+/* Flag to check if function should return.
+ * need to find some other elagent way of doing it.
+ */
+extern bool Return;
+
 }} // Namespace Ast, ALang
 
 #endif

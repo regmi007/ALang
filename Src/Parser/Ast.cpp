@@ -28,10 +28,10 @@ DtValue NBlock::Evaluate( Context & Ctx )
     
     for( auto Stmt : this->Statements )
     {
+        if( ALang::Ast::Return )
+            break;
+
         Ret = Stmt->Evaluate( Ctx );
-        
-        if( Stmt->Type == StatementType::RETURN )
-            return Ret;
     }
 
     return Ret;
@@ -44,11 +44,13 @@ DtValue NExpressionStatement::Evaluate( Context & Ctx )
 
 DtValue NReturnStatement::Evaluate( Context & Ctx )
 {
+    ALang::Ast::Return = true;
     return DtValue();
 }
 
 DtValue NReturnExpressionStatement::Evaluate( Context & Ctx )
 {
+    ALang::Ast::Return = true;
     return this->Expression.Evaluate( Ctx );
 }
 
@@ -147,7 +149,9 @@ DtValue NUserFunctionDefinition::Evaluate( Context & Ctx )
 
 DtValue NUserFunctionDefinition::Call( Context & Ctx )
 {
-    return this->Block.Evaluate( Ctx );
+    DtValue Ret = this->Block.Evaluate( Ctx );
+    ALang::Ast::Return = false;
+    return Ret;
 }
 
 DtValue NBuiltInFunctionDefinition::Evaluate( Context & Ctx )
@@ -204,3 +208,5 @@ DtValue NForStatement::Evaluate( Context & Ctx )
 
     return DtValue();
 }
+
+bool ALang::Ast::Return = false;
