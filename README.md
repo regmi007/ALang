@@ -39,5 +39,5 @@ How to build.
 How to run.
 -------------------
     - Inside /path/to/ALang
-      $ Src/ALang Example/Script.al
+      $ Src/ALang Resources/Example/Script.al
 

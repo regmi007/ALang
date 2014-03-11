@@ -1,4 +1,4 @@
-List of name who have contributed in this project.
+Person who have contributed in this project.
 
 Commits    Name
     55     Aayush Poudel
