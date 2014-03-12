@@ -18,6 +18,9 @@ Build dependencies.
 
     - cmake: Build tool
       $ sudo aptitude install cmake
+      
+    - Build: build-essential 
+      $ sudo aptitude install build-essential -y 
 
 To generate documentstion.
 ----------------------------
@@ -39,5 +42,5 @@ How to build.
 How to run.
 -------------------
     - Inside /path/to/ALang
-      $ Src/ALang Resources/Example/Script.1.al
+      $ Resources/Example/Script.1.al
 
